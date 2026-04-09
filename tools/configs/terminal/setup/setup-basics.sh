@@ -171,6 +171,50 @@ setup_ssh_key() {
   ssh -T git@github.com || true
 }
 
+install_ohmyzsh_and_plugins() {
+  echo -e "${CYAN}=== Installing Oh My Zsh and plugins ===${RESET}"
+
+  # Install Oh My Zsh if missing
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    echo "Oh My Zsh not found; installing..."
+    # Official install script
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || {
+      echo -e "${YELLOW}Oh My Zsh installation failed or was interrupted.${RESET}"
+    }
+  else
+    echo "Oh My Zsh already installed at ~/.oh-my-zsh"
+  fi
+
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    echo -e "${YELLOW}Skipping plugin install because ~/.oh-my-zsh is missing.${RESET}"
+    return
+  fi
+
+  # Install plugins: zsh-autosuggestions & zsh-syntax-highlighting
+  local zsh_custom
+  zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+  echo "Ensuring zsh-autosuggestions is installed..."
+  if [[ ! -d "$zsh_custom/plugins/zsh-autosuggestions" ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+      "$zsh_custom/plugins/zsh-autosuggestions" || \
+      echo -e "${YELLOW}Failed to clone zsh-autosuggestions.${RESET}"
+  else
+    echo "zsh-autosuggestions already present."
+  fi
+
+  echo "Ensuring zsh-syntax-highlighting is installed..."
+  if [[ ! -d "$zsh_custom/plugins/zsh-syntax-highlighting" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+      "$zsh_custom/plugins/zsh-syntax-highlighting" || \
+      echo -e "${YELLOW}Failed to clone zsh-syntax-highlighting.${RESET}"
+  else
+    echo "zsh-syntax-highlighting already present."
+  fi
+
+  echo -e "${GREEN}Oh My Zsh and plugins step complete. Make sure your .zshrc has the proper theme/plugins block with a safety guard.${RESET}"
+}
+
 clone_dreemdev() {
   echo -e "${CYAN}=== Cloning dreemdev repo (forever repo) ===${RESET}"
 
@@ -369,6 +413,10 @@ main() {
     setup_ssh_key
   fi
 
+  if confirm "Install Oh My Zsh with autosuggestions and syntax highlighting?"; then
+    install_ohmyzsh_and_plugins
+  fi
+
   if confirm "Clone dreemdev repo via SSH?"; then
     clone_dreemdev
   fi
@@ -393,3 +441,4 @@ main() {
 }
 
 main
+
