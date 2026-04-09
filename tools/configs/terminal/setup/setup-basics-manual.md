@@ -9,10 +9,11 @@ The high‑level flow:
 3. Install Python and R (via Homebrew).  
 4. Configure Git (name, email, editor).  
 5. Generate an SSH key and connect it to GitHub.  
-6. Clone the `dreemdev` repo via SSH.  
-7. Deploy your `~/.zshrc` from `dreemdev/dotfiles/.zshrc`.  
-8. Optionally bootstrap the Python and R playgrounds.  
-9. Optionally clone additional repos into `projects`, `learning`, or `dreemdev`.
+6. Install Oh My Zsh + plugins (autosuggestions, syntax highlighting).  
+7. Clone the `dreemdev` repo via SSH.  
+8. Deploy your `~/.zshrc` from `dreemdev/dotfiles/.zshrc`.  
+9. Optionally bootstrap the Python and R playgrounds.  
+10. Optionally clone additional repos into `projects`, `learning`, or `dreemdev`.
 
 ***
 
@@ -46,7 +47,7 @@ The rest of this document explains what each step does and shows how to do it ma
 
   - `~/dev/projects` – project repos (apps, libraries, services).  
   - `~/dev/learning` – learning repos, experiments, courses.  
-  - `~/dev/dreemdev` – motherload repo  
+  - `~/dev/dreemdev` – “motherload” repo (scripts, docs, configs, playgrounds).  
   - `~/dev/temp` – scratch area.  
   - `~/dev/archive` – old/parked work.
 
@@ -238,7 +239,66 @@ Type `yes` when asked to trust GitHub’s fingerprint. You should see a welcome 
 
 ***
 
-## 6. Clone `dreemdev`
+## 6. Oh My Zsh and plugins (autosuggestions, syntax highlighting)
+
+### What the script does
+
+- Installs **Oh My Zsh** if `~/.oh-my-zsh` does not exist, using the official unattended installer. [ohmyz](https://ohmyz.sh)
+- Installs the plugins:
+  - `zsh-autosuggestions` – shows ghosted command suggestions based on history. [git.gc4](https://git.gc4.at/linux/zsh-autosuggestions/src/commit/f1c3b98774bb52667fe3303ace477898aedd3b9b/INSTALL.md)
+  - `zsh-syntax-highlighting` – colors commands/flags/paths as you type. [piyazon](https://piyazon.top/posts/ohmyzsh-zsh-syntax-highlighting-and-auto-suggestions/)
+- Your `.zshrc` (from `dreemdev/dotfiles`) is written so it only loads Oh My Zsh if `~/.oh-my-zsh` exists, so it stays safe on machines where this step is skipped.
+
+### Manual commands
+
+#### 6.1 Install Oh My Zsh
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+If the installer asks to overwrite `~/.zshrc`, choose **No**, since your real config is tracked in `dreemdev/dotfiles`. If it did overwrite, just re‑symlink from `dreemdev` as shown in section 8.
+
+#### 6.2 Install plugins
+
+```bash
+# zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+#### 6.3 Ensure `.zshrc` loads them safely
+
+In your `~/dev/dreemdev/dotfiles/.zshrc`, the relevant block should look roughly like:
+
+```zsh
+export ZSH="$HOME/.oh-my-zsh"
+
+if [ -d "$ZSH" ]; then
+  ZSH_THEME="steeef"
+
+  plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+  )
+
+  source "$ZSH/oh-my-zsh.sh"
+fi
+```
+
+This way, on a new Mac:
+
+- Before you run this step, `.zshrc` skips Oh My Zsh/ plugins (no errors).  
+- After this step, the theme + plugins are active in new shells. [blog.openreplay](https://blog.openreplay.com/customizing-terminal-oh-my-zsh-themes-plugins/)
+
+***
+
+## 7. Clone `dreemdev`
 
 ### What the script does
 
@@ -256,7 +316,7 @@ git clone git@github.com:ETA444/dreemdev.git .   # note the dot for current dire
 
 ***
 
-## 7. Deploy `.zshrc` from `dreemdev/dotfiles`
+## 8. Deploy `.zshrc` from `dreemdev/dotfiles`
 
 ### What the script does
 
@@ -298,7 +358,7 @@ source ~/.zshrc
 
 ***
 
-## 8. Python playground environment
+## 9. Python playground environment
 
 ### What the script does
 
@@ -331,18 +391,18 @@ deactivate
 
 ***
 
-## 9. R playground environment
+## 10. R playground environment
 
 ### What the script does
 
 If `~/dev/dreemdev/projects/r/playground` exists, it:
 
 - If `renv.lock` exists:
-  - Runs `install.packages("renv")` and `renv::restore()` to recreate the locked environment.  
+  - Runs `install.packages("renv")` and `renv::restore()` to recreate the locked environment. [docs.posit](https://docs.posit.co/ide/user/ide/guide/environments/r/renv.html)
 - Else, if `requirements.R` exists:
   - Runs `renv::init()`, sources `requirements.R` to install packages, then `renv::snapshot()`.  
 
-This gives you a project‑local package library for R, similar to a Python venv. [docs.posit](https://docs.posit.co/ide/user/ide/guide/environments/r/renv.html)
+This gives you a project‑local package library for R, similar to a Python venv. [bioinformatics.ccr.cancer](https://bioinformatics.ccr.cancer.gov/docs/reproducible-r-on-biowulf/L3_PackageManagement/)
 
 ### Manual commands
 
@@ -373,7 +433,7 @@ q()
 
 ***
 
-## 10. Cloning additional repos (projects / learning / dreemdev)
+## 11. Cloning additional repos (projects / learning / dreemdev)
 
 ### What the script does
 
