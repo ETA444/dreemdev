@@ -2,10 +2,15 @@
 
 set -euo pipefail
 
-GREEN="\033[32m"
-YELLOW="\033[33m"
-CYAN="\033[36m"
-RESET="\033[0m"
+GREEN="\\033[32m"
+YELLOW="\\033[33m"
+CYAN="\\033[36m"
+RESET="\\033[0m"
+
+# Core paths
+DREEMDEV_ROOT="$HOME/dev/dreemdev"
+PY_PLAYGROUND="$DREEMDEV_ROOT/projects/python/playground"
+R_PLAYGROUND="$DREEMDEV_ROOT/projects/r/playground"
 
 prompt() {
   local prompt_text="$1"
@@ -30,41 +35,22 @@ confirm() {
   return 1
 }
 
-append_if_missing() {
-  local line="$1"
-  local file="$2"
-  grep -qxF "$line" "$file" 2>/dev/null || echo "$line" >> "$file"
-}
+setup_dev_folders() {
+  echo -e "${CYAN}=== Setting up dev folder structure ===${RESET}"
 
-setup_dev_folders_and_aliases() {
-  echo -e "${CYAN}=== Setting up dev folder structure and aliases ===${RESET}"
-
-  mkdir -p "$HOME/dev/projects/datasafari"
-  mkdir -p "$HOME/dev/projects/dreemcorp"
-  mkdir -p "$HOME/dev/projects/georgedreemer.com"
-  mkdir -p "$HOME/dev/learning/1month-learning"
-  mkdir -p "$HOME/dev/learning/datacamp-learning"
+  mkdir -p "$HOME/dev/projects"
+  mkdir -p "$HOME/dev/learning"
   mkdir -p "$HOME/dev/dreemdev"
   mkdir -p "$HOME/dev/temp"
   mkdir -p "$HOME/dev/archive"
 
-  echo "Created/verified folder structure under ~/dev"
-
-  local zshrc="$HOME/.zshrc"
-  touch "$zshrc"
-
-  append_if_missing "alias dev='cd ~/dev'" "$zshrc"
-  append_if_missing "alias build='cd ~/dev/projects'" "$zshrc"
-  append_if_missing "alias learn='cd ~/dev/learning'" "$zshrc"
-  append_if_missing "alias practice='cd ~/dev/dreemdev'" "$zshrc"
-
-  echo "Aliases added to $zshrc (available in new shells)."
-  if confirm "Source ~/.zshrc now in this shell?"; then
-    # shellcheck source=/dev/null
-    source "$zshrc"
-  fi
-
-  echo -e "${GREEN}Dev folders and aliases ready.${RESET}"
+  echo "Created/verified base folder structure under ~/dev:"
+  echo "  - ~/dev/projects"
+  echo "  - ~/dev/learning"
+  echo "  - ~/dev/dreemdev"
+  echo "  - ~/dev/temp"
+  echo "  - ~/dev/archive"
+  echo -e "${GREEN}Dev folders ready.${RESET}"
 }
 
 install_xcode_clt() {
@@ -90,8 +76,31 @@ install_homebrew() {
     if confirm "Install Homebrew now?"; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       echo "Homebrew installed."
+      # Ensure brew is on PATH for this shell and future ones
+      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
+      # shellcheck source=/dev/null
+      eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
   fi
+}
+
+install_dev_languages() {
+  echo -e "${CYAN}=== Installing Python & R via Homebrew ===${RESET}"
+
+  if ! command -v brew >/dev/null 2>&1; then
+    echo -e "${YELLOW}Homebrew not available; skipping language installation.${RESET}"
+    return
+  fi
+
+  if confirm "Install/upgrade Homebrew python (python 3.x)?"; then
+    brew install python || brew upgrade python || true
+  fi
+
+  if confirm "Install/upgrade R (CLI, via Homebrew)?"; then
+    brew install r || brew upgrade r || true
+  fi
+
+  echo -e "${GREEN}Language installation step complete.${RESET}"
 }
 
 configure_git() {
@@ -162,61 +171,182 @@ setup_ssh_key() {
   ssh -T git@github.com || true
 }
 
+clone_dreemdev() {
+  echo -e "${CYAN}=== Cloning dreemdev repo (forever repo) ===${RESET}"
+
+  if ! command -v git >/dev/null 2>&1; then
+    echo -e "${YELLOW}git not available; skipping dreemdev clone.${RESET}"
+    return
+  fi
+
+  if [[ -d "$DREEMDEV_ROOT/.git" ]]; then
+    echo "dreemdev already exists at $DREEMDEV_ROOT"
+    return
+  fi
+
+  mkdir -p "$DREEMDEV_ROOT"
+  local url
+  url="$(prompt 'dreemdev SSH clone URL' 'git@github.com:ETA444/dreemdev.git')"
+
+  echo "Cloning dreemdev into $DREEMDEV_ROOT from $url ..."
+  git clone "$url" "$DREEMDEV_ROOT" || {
+    echo -e "${YELLOW}Failed to clone dreemdev. You can clone it manually later and rerun relevant steps.${RESET}"
+    return
+  }
+
+  echo -e "${GREEN}dreemdev clone complete.${RESET}"
+}
+
+deploy_zshrc_from_repo() {
+  echo -e "${CYAN}=== Deploying .zshrc from dreemdev/dotfiles ===${RESET}"
+
+  if [[ ! -d "$DREEMDEV_ROOT" ]]; then
+    echo -e "${YELLOW}dreemdev not found at $DREEMDEV_ROOT. Clone it first, then rerun this step.${RESET}"
+    return
+  fi
+
+  local repo_zshrc="$DREEMDEV_ROOT/dotfiles/.zshrc"
+  local target_zshrc="$HOME/.zshrc"
+
+  if [[ ! -f "$repo_zshrc" ]]; then
+    echo -e "${YELLOW}No $repo_zshrc found. Skipping .zshrc deployment.${RESET}"
+    return
+  fi
+
+  if [[ -f "$target_zshrc" && ! -L "$target_zshrc" ]]; then
+    local backup="$target_zshrc.backup.$(date +%Y%m%d-%H%M%S)"
+    echo "Backing up existing ~/.zshrc to $backup"
+    cp "$target_zshrc" "$backup"
+  fi
+
+  ln -sf "$repo_zshrc" "$target_zshrc"
+  echo "Symlinked $target_zshrc -> $repo_zshrc"
+
+  if confirm "Source ~/.zshrc now in this shell?"; then
+    # shellcheck source=/dev/null
+    source "$target_zshrc"
+  fi
+
+  echo -e "${GREEN}.zshrc deployment complete.${RESET}"
+}
+
+setup_python_playground() {
+  echo -e "${CYAN}=== Python playground venv setup ===${RESET}"
+
+  if [[ ! -d "$PY_PLAYGROUND" ]]; then
+    echo -e "${YELLOW}Python playground directory not found at $PY_PLAYGROUND. Skipping.${RESET}"
+    return
+  fi
+
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo -e "${YELLOW}python3 not available; install it via Homebrew first.${RESET}"
+    return
+  fi
+
+  cd "$PY_PLAYGROUND"
+
+  if [[ ! -f "requirements.txt" ]]; then
+    echo -e "${YELLOW}No requirements.txt in $PY_PLAYGROUND; skipping venv setup.${RESET}"
+    return
+  fi
+
+  rm -rf venv
+  python3 -m venv venv
+  # shellcheck source=/dev/null
+  source venv/bin/activate
+  pip install --upgrade pip
+  pip install -r requirements.txt
+  deactivate
+
+  echo -e "${GREEN}Python playground venv ready (using Homebrew Python).${RESET}"
+}
+
+setup_r_playground() {
+  echo -e "${CYAN}=== R playground renv setup ===${RESET}"
+
+  if [[ ! -d "$R_PLAYGROUND" ]]; then
+    echo -e "${YELLOW}R playground directory not found at $R_PLAYGROUND. Skipping.${RESET}"
+    return
+  fi
+
+  if ! command -v R >/dev/null 2>&1; then
+    echo -e "${YELLOW}R not available; install it via Homebrew first.${RESET}"
+    return
+  fi
+
+  cd "$R_PLAYGROUND"
+
+  if [[ -f "renv.lock" ]]; then
+    R -e 'install.packages("renv"); renv::restore()'
+  elif [[ -f "requirements.R" ]]; then
+    R -e 'install.packages("renv"); renv::init(); source("requirements.R"); renv::snapshot()'
+  else
+    echo -e "${YELLOW}No renv.lock or requirements.R found; skipping R env setup.${RESET}"
+    return
+  fi
+
+  echo -e "${GREEN}R playground environment ready via renv.${RESET}"
+}
+
 clone_repos() {
-  echo -e "${CYAN}=== Cloning GitHub repos ===${RESET}"
+  echo -e "${CYAN}=== Optionally cloning additional GitHub repos ===${RESET}"
 
   if ! command -v git >/dev/null 2>&1; then
     echo -e "${YELLOW}git not available; skipping cloning.${RESET}"
     return
   fi
 
-  GITHUB_USER="$(prompt 'Your GitHub username' 'ETA444')"
+  local github_user
+  github_user="$(prompt 'Your GitHub username' 'ETA444')"
 
-  echo "Where should I clone your main repos?"
-  echo "1) ~/dev/dreemdev"
-  echo "2) ~/dev/projects"
-  CLONE_BASE_CHOICE="$(prompt 'Choose 1 or 2' '1')"
-  if [[ "$CLONE_BASE_CHOICE" == "2" ]]; then
-    CLONE_BASE="$HOME/dev/projects"
-  else
-    CLONE_BASE="$HOME/dev/dreemdev"
-  fi
-  mkdir -p "$CLONE_BASE"
+  echo "You can now add repos one by one."
+  echo "For each repo, you'll choose whether it belongs under projects, learning, or dreemdev."
+  echo "Leave the repo name empty to stop."
 
-  if confirm "Clone dreemcorp repo (git@github.com:${GITHUB_USER}/dreemcorp.git)?"; then
-    cd "$CLONE_BASE"
-    if [[ -d "dreemcorp" ]]; then
-      echo "Repository 'dreemcorp' already exists in $CLONE_BASE, skipping clone."
-    else
-      git clone "git@github.com:${GITHUB_USER}/dreemcorp.git"
+  while true; do
+    local repo
+    repo="$(prompt 'Repo name to clone (empty to finish)' '')"
+    if [[ -z "$repo" ]]; then
+      break
     fi
-    cd "dreemcorp" 2>/dev/null || true
-    git status || true
-  fi
 
-  # Template for more repos – you can edit this before running if you like.
-  if confirm "Clone any additional repos now (space-separated names)?"; then
-    EXTRA_REPOS="$(prompt 'Enter repo names (e.g. datasafari georgedreemer.com)' '')"
-    if [[ -n "$EXTRA_REPOS" ]]; then
-      cd "$CLONE_BASE"
-      for repo in $EXTRA_REPOS; do
-        if [[ -d "$repo" ]]; then
-          echo "Repo '$repo' already exists in $CLONE_BASE, skipping."
-        else
-          git clone "git@github.com:${GITHUB_USER}/${repo}.git" || echo "Failed to clone ${repo}."
-        fi
-      done
+    echo "Where should '$repo' live?"
+    echo "1) ~/dev/projects"
+    echo "2) ~/dev/learning"
+    echo "3) ~/dev/dreemdev"
+    local choice
+    choice="$(prompt 'Choose 1, 2, or 3' '1')"
+
+    local base_dir
+    case "$choice" in
+      2) base_dir="$HOME/dev/learning" ;;
+      3) base_dir="$HOME/dev/dreemdev" ;;
+      *) base_dir="$HOME/dev/projects" ;;
+    esac
+
+    mkdir -p "$base_dir"
+    cd "$base_dir"
+
+    if [[ -d "$repo" ]]; then
+      echo "Directory '$base_dir/$repo' already exists, skipping clone."
+      continue
     fi
-  fi
 
-  echo -e "${GREEN}Repo cloning step complete.${RESET}"
+    local url="git@github.com:${github_user}/${repo}.git"
+    echo "Cloning $url into $base_dir/$repo ..."
+    if ! git clone "$url"; then
+      echo -e "${YELLOW}Failed to clone ${repo}.${RESET}"
+    fi
+  done
+
+  echo -e "${GREEN}Additional repo cloning step complete.${RESET}"
 }
 
 main() {
   echo -e "${GREEN}New Mac dev setup script starting...${RESET}"
 
-  if confirm "Run dev folder structure and alias setup?"; then
-    setup_dev_folders_and_aliases
+  if confirm "Run dev folder structure setup?"; then
+    setup_dev_folders
   fi
 
   if confirm "Check/install Xcode Command Line Tools?"; then
@@ -227,6 +357,10 @@ main() {
     install_homebrew
   fi
 
+  if confirm "Install Python & R via Homebrew?"; then
+    install_dev_languages
+  fi
+
   if confirm "Configure global git user.name, user.email and editor?"; then
     configure_git
   fi
@@ -235,7 +369,23 @@ main() {
     setup_ssh_key
   fi
 
-  if confirm "Clone your GitHub repos (dreemcorp, etc.)?"; then
+  if confirm "Clone dreemdev repo via SSH?"; then
+    clone_dreemdev
+  fi
+
+  if confirm "Deploy ~/.zshrc from dreemdev/dotfiles (if present)?"; then
+    deploy_zshrc_from_repo
+  fi
+
+  if confirm "Setup Python playground venv (if dreemdev python playground exists)?"; then
+    setup_python_playground
+  fi
+
+  if confirm "Setup R playground renv (if dreemdev R playground exists)?"; then
+    setup_r_playground
+  fi
+
+  if confirm "Clone additional GitHub repos (learning/projects/dreemdev)?"; then
     clone_repos
   fi
 
