@@ -1,0 +1,40 @@
+# --- Numerics & data structures ---
+numpy
+pandas
+scipy
+
+# --- Visualization ---
+matplotlib
+plotly
+seaborn
+
+# --- Notebooks & experimentation ---
+ipykernel
+jupyter
+jupyterlab
+
+# --- ML & statistics ---
+scikit-learn
+statsmodels
+xgboost
+
+# --- Data I/O & storage ---
+polars
+psycopg2-binary
+pyarrow
+SQLAlchemy
+
+# --- Web & APIs ---
+flask
+python-dotenv
+requests
+
+# --- Utilities ---
+python-dateutil
+rich
+tqdm
+
+# --- Testing & code quality ---
+black
+pytest
+ruff
