@@ -91,6 +91,7 @@ alias notes='open -a Notes'
 
 alias youtube='open -a \"Comet\" https://youtube.com'
 alias google='open -a \"Comet\" https://google.com'
+alias github='open -a \"Comet\" https://github.com/ETA444'
 
 # ==========================
 # Python & environments
