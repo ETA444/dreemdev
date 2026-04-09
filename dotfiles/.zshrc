@@ -72,13 +72,13 @@ alias rstudio='open -a RStudio'
 # Productivity & communication
 alias proton='open -a ProtonMail'
 alias comet='open -a Comet'
-alias gmail='open -a \"Comet\" https://gmail.com'
+alias gmail='open -a Comet https://gmail.com'
 alias perp='open -a Perplexity'
 alias nord='open -a NordVPN'
 
 # Cloud storage
-alias pcloud='open \"/Users/eta444/pCloud Drive\"'
-alias icloud='open \"/Users/eta444/Library/Mobile Documents/com~apple~CloudDocs\"'
+alias pcloud='open ~/pCloud\ Drive'
+alias icloud='open ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 
 # Media & notes
 alias podcasts='open -a Podcasts'
@@ -89,9 +89,9 @@ alias notes='open -a Notes'
 # Browser shortcuts
 # ==========================
 
-alias youtube='open -a \"Comet\" https://youtube.com'
-alias google='open -a \"Comet\" https://google.com'
-alias github='open -a \"Comet\" https://github.com/ETA444'
+alias youtube='open -a Comet https://youtube.com'
+alias google='open -a Comet https://google.com'
+alias github='open -a Comet https://github.com/ETA444'
 
 # ==========================
 # Python & environments
