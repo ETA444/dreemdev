@@ -1,13 +1,20 @@
+# ==========================
+# oh-my-zsh
+# ==========================
+# Oh My Zsh setup (safe if not installed yet)
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="agnoster"
 
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
+if [ -d "$ZSH" ]; then
+  ZSH_THEME="steeef"
 
-source $ZSH/oh-my-zsh.sh
+  plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+  )
+
+  source "$ZSH/oh-my-zsh.sh"
+fi
 
 # ==========================
 # Core helpers
