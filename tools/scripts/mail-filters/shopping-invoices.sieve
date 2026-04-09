@@ -41,7 +41,6 @@ if header :contains "subject" [
   "reminder: invoice",
   "reminder: payment",
   "booking",
-  "ticket",
   "ordered",
   "appointment",
   "factuur",
@@ -49,6 +48,79 @@ if header :contains "subject" [
 ]
 {
   fileinto "Shopping/Invoices";
+  stop;
+}
+
+###############################################################################
+# Shopping – Tickets (travel bookings: flights, hotels, buses, trains)
+###############################################################################
+
+if anyof (
+
+  /* Travel booking / trip confirmation patterns */
+  header :contains "subject" [
+    "booking confirmation",
+    "reservation confirmed",
+    "reservation confirmation",
+    "your booking is confirmed",
+    "your reservation is confirmed",
+    "trip confirmation",
+    "your trip is confirmed",
+    "your trip confirmation",
+    "travel itinerary",
+    "itinerary / receipt",
+    "flight itinerary",
+    "your itinerary",
+    "e-ticket",
+    "e ticket",
+    "eticket",
+    "boarding pass",
+    "your boarding pass",
+    "check-in is now open",
+    "check in is now open",
+    "check-in open",
+    "check in open",
+    "bus ticket",
+    "train ticket",
+    "plane ticket",
+    "билет",
+    "билети",
+    "резервация",
+    "резервацията ви"
+  ],
+
+  /* Travel brands / platforms in From */
+  header :contains "from" [
+    "ryanair",
+    "wizz air",
+    "wizzair",
+    "easyjet",
+    "lufthansa",
+    "air france",
+    "klm",
+    "qatar airways",
+    "qatarairways",
+    "emirates",
+    "flydubai",
+    "turkish airlines",
+    "turkishairlines",
+    "airbnb",
+    "booking.com",
+    "booking",
+    "hotels.com",
+    "hostelworld",
+    "flixbus",
+    "flix bus",
+    "trainline",
+    "bahn",
+    "deutsche bahn",
+    "sncf",
+    "omio",
+    "obilet"
+  ]
+)
+{
+  fileinto "Shopping/Tickets";
   stop;
 }
 
