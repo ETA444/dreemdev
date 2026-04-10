@@ -55,7 +55,7 @@ code --install-extension iterative.dvc $FORCE_FLAG
 
 code --install-extension tamasfe.even-better-toml $FORCE_FLAG
 code --install-extension redhat.vscode-yaml $FORCE_FLAG
-code --install-extension ms-vscode.todo-tree $FORCE_FLAG
+code --install-extension Gruntfuggly.todo-tree $FORCE_FLAG
 code --install-extension esbenp.prettier-vscode $FORCE_FLAG
 code --install-extension streetsidesoftware.code-spell-checker $FORCE_FLAG
 code --install-extension sleistner.vscode-fileutils $FORCE_FLAG
