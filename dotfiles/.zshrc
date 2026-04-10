@@ -30,11 +30,13 @@ alias zcommit="cd ~/dev/dreemdev/dotfiles && git add .zshrc && git commit -m 'Up
 alias zlink='ls -l ~/.zshrc'
 
 # Quick navigation
-alias home='cd ~'
-alias dev='cd ~/dev'
-alias build='cd ~/dev/projects'
-alias learn='cd ~/dev/learning'
-alias dreemdev='cd ~/dev/dreemdev'
+alias home='cd ~ && ls'
+alias desktop='cd ~/Desktop && ls'
+alias downloads='cd ~/Downloads && ls'
+alias dev='cd ~/dev && ls'
+alias build='cd ~/dev/projects && ls'
+alias learn='cd ~/dev/learning && ls'
+alias dreemdev='cd ~/dev/dreemdev && ls'
 
 # ==========================
 # Shell QoL
@@ -65,6 +67,8 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias sys='open -b com.apple.SystemPreferences'
 alias f='open -a Finder'
 alias fcd='open .'
+alias emptytrash='rm -rf ~/.Trash/*'
+alias lockmac='open /System/Library/CoreServices/Menu\ Extras/VolumeMixer.app'
 
 # IDEs / tools
 alias rstudio='open -a RStudio'
@@ -75,6 +79,7 @@ alias comet='open -a Comet'
 alias gmail='open -a Comet https://gmail.com'
 alias perp='open -a Perplexity'
 alias nord='open -a NordVPN'
+alias 1pass='open -a 1Password'
 
 # Cloud storage
 alias pcloud='open ~/pCloud\ Drive'
