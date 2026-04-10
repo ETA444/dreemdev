@@ -1,0 +1,43 @@
+[
+  // ===== DATA SCIENCE / JUPYTER =====
+  {
+    "key": "cmd+shift+j",
+    "command": "notebook.cell.executeAndSelectBelow",
+    "when": "notebookEditorFocused && notebookCellType == 'code'"
+  },
+
+  // Example: run cell and stay (optional alternative)
+  // {
+  //   "key": "cmd+enter",
+  //   "command": "notebook.cell.execute",
+  //   "when": "notebookEditorFocused && notebookCellType == 'code'"
+  // },
+
+  // ===== EDITOR UTILITIES =====
+  {
+    "key": "cmd+l",
+    "command": "cursorEndSelect",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+0",
+    "command": "editor.foldAll",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+j",
+    "command": "editor.unfoldAll",
+    "when": "editorTextFocus"
+  },
+
+  // ===== TERMINAL & OUTPUT =====
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "cmd+shift+y",
+    "command": "workbench.action.output.toggleOutput"
+  }
+]
+
