@@ -1,85 +1,91 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Installing VS Code extensions for Python, Data, ML & Dev..."
+FORCE_FLAG=""
 
-#########################
-# Python & Data Science #
-#########################
-
-code --install-extension ms-python.python
-code --install-extension ms-python.vscode-pylance
-code --install-extension ms-python.jupyter
-code --install-extension ms-toolsai.jupyter
-code --install-extension ms-toolsai.datawrangler
-code --install-extension ms-toolsai.python-ds-extension-pack
-
-################################
-# Code Quality, Typing & Tasks #
-################################
-
-code --install-extension charliermarsh.ruff
-code --install-extension ms-python.black-formatter
-code --install-extension ms-python.isort
-code --install-extension ms-python.flake8
-code --install-extension ms-vscode.makefile-tools
-
-#########################
-# Git & Version Control #
-#########################
-
-code --install-extension eamodio.gitlens
-code --install-extension mhutchie.git-graph
-code --install-extension donjayamanne.githistory
-code --install-extension github.vscode-pull-request-github
-
-##############################
-# Remote, Containers & Infra #
-##############################
-
-code --install-extension ms-vscode-remote.remote-ssh
-code --install-extension ms-vscode-remote.remote-containers
-code --install-extension ms-azuretools.vscode-docker
-code --install-extension hashicorp.terraform
-code --install-extension iterative.dvc
-
-########################
-# Productivity & Files #
-########################
-
-code --install-extension tamasfe.even-better-toml
-code --install-extension redhat.vscode-yaml
-code --install-extension ms-vscode.todo-tree
-code --install-extension esbenp.prettier-vscode
-code --install-extension streetsidesoftware.code-spell-checker
-code --install-extension sleistner.vscode-fileutils
-code --install-extension usernamehw.errorlens
-code --install-extension ms-vscode.live-server
-
-##########################
-# AI / Code Intelligence #
-##########################
-
-code --install-extension GitHub.copilot
-code --install-extension GitHub.copilot-chat
-code --install-extension Continue.continue
-code --install-extension TabNine.tabnine-vscode
+if [ "$1" = "--force" ]; then
+  FORCE_FLAG="--force"
+  echo "Installing/updating VS Code extensions (force mode)..."
+else
+  echo "Installing VS Code extensions (no force)..."
+fi
 
 ############################
-# Web / JS / TS / Solidity #
+# Python & Data Science
 ############################
 
-code --install-extension dbaeumer.vscode-eslint
-code --install-extension meganrogge.template-string-converter
-code --install-extension JuanBlanco.solidity
+code --install-extension ms-python.python $FORCE_FLAG
+code --install-extension ms-python.vscode-pylance $FORCE_FLAG
+code --install-extension ms-toolsai.jupyter $FORCE_FLAG
+code --install-extension ms-toolsai.datawrangler $FORCE_FLAG
+code --install-extension ms-toolsai.python-ds-extension-pack $FORCE_FLAG
 
-#######################
-# Themes & Appearance #
-#######################
+############################
+# Code Quality, Typing & Tasks
+############################
 
-code --install-extension dracula-theme.theme-dracula
-code --install-extension pkief.material-icon-theme
-code --install-extension zhuangtongfa.Material-theme      # One Dark Pro style
-code --install-extension enkia.tokyo-night                # Tokyo Night
+code --install-extension charliermarsh.ruff $FORCE_FLAG
+code --install-extension ms-python.black-formatter $FORCE_FLAG
+code --install-extension ms-python.isort $FORCE_FLAG
+code --install-extension ms-python.flake8 $FORCE_FLAG
+code --install-extension ms-vscode.makefile-tools $FORCE_FLAG
 
-echo "Done. Restart VS Code if it was open."
+############################
+# Git & Version Control
+############################
+
+code --install-extension eamodio.gitlens $FORCE_FLAG
+code --install-extension mhutchie.git-graph $FORCE_FLAG
+code --install-extension donjayamanne.githistory $FORCE_FLAG
+code --install-extension github.vscode-pull-request-github $FORCE_FLAG
+
+############################
+# Remote, Containers & Infra
+############################
+
+code --install-extension ms-vscode-remote.remote-ssh $FORCE_FLAG
+code --install-extension ms-vscode-remote.remote-containers $FORCE_FLAG
+code --install-extension ms-azuretools.vscode-docker $FORCE_FLAG
+code --install-extension hashicorp.terraform $FORCE_FLAG
+code --install-extension iterative.dvc $FORCE_FLAG
+
+############################
+# Productivity & Files
+############################
+
+code --install-extension tamasfe.even-better-toml $FORCE_FLAG
+code --install-extension redhat.vscode-yaml $FORCE_FLAG
+code --install-extension ms-vscode.todo-tree $FORCE_FLAG
+code --install-extension esbenp.prettier-vscode $FORCE_FLAG
+code --install-extension streetsidesoftware.code-spell-checker $FORCE_FLAG
+code --install-extension sleistner.vscode-fileutils $FORCE_FLAG
+code --install-extension usernamehw.errorlens $FORCE_FLAG
+code --install-extension ms-vscode.live-server $FORCE_FLAG
+
+############################
+# AI / Code Intelligence
+############################
+
+code --install-extension GitHub.copilot $FORCE_FLAG
+code --install-extension GitHub.copilot-chat $FORCE_FLAG
+code --install-extension Continue.continue $FORCE_FLAG
+code --install-extension TabNine.tabnine-vscode $FORCE_FLAG
+
+############################
+# Web / JS / TS / Solidity
+############################
+
+code --install-extension dbaeumer.vscode-eslint $FORCE_FLAG
+code --install-extension meganrogge.template-string-converter $FORCE_FLAG
+code --install-extension JuanBlanco.solidity $FORCE_FLAG
+
+############################
+# Themes & Appearance
+############################
+
+code --install-extension dracula-theme.theme-dracula $FORCE_FLAG
+code --install-extension pkief.material-icon-theme $FORCE_FLAG
+code --install-extension zhuangtongfa.Material-theme $FORCE_FLAG
+code --install-extension enkia.tokyo-night $FORCE_FLAG
+
+echo "Done."
