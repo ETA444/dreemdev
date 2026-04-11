@@ -1,0 +1,219 @@
+{
+  // ===== DATA LOADING & EXPLORATION =====
+  "Data Analysis Template": {
+    "prefix": "da-start",
+    "body": [
+      "import pandas as pd",
+      "import numpy as np",
+      "import matplotlib.pyplot as plt",
+      "import seaborn as sns",
+      "",
+      "# Load data",
+      "df = pd.read_csv('${1:data.csv}')",
+      "",
+      "# Explore",
+      "print(df.shape)",
+      "print(df.dtypes)",
+      "df.head()",
+      "",
+      "# Summary stats",
+      "df.describe()",
+      "",
+      "$0"
+    ],
+    "description": "Quick data analysis starter"
+  },
+
+  "EDA Block": {
+    "prefix": "da-eda",
+    "body": [
+      "# Missing values",
+      "print(df.isnull().sum())",
+      "",
+      "# Distribution",
+      "df['${1:column}'].value_counts()",
+      "",
+      "# Correlation",
+      "df.corr(numeric_only=True)",
+      "",
+      "$0"
+    ],
+    "description": "EDA quick checks"
+  },
+
+  // ===== VISUALISATION =====
+  "Plot Template": {
+    "prefix": "da-plot",
+    "body": [
+      "fig, ax = plt.subplots(figsize=(${1:10}, ${2:6}))",
+      "ax.${3|plot,bar,scatter,hist|}(${4:x}, ${5:y}, label='${6:label}')",
+      "ax.set_xlabel('${7:X}')",
+      "ax.set_ylabel('${8:Y}')",
+      "ax.set_title('${9:Title}')",
+      "ax.legend()",
+      "plt.tight_layout()",
+      "plt.show()",
+      "$0"
+    ],
+    "description": "Matplotlib figure template with common axis methods"
+  },
+
+  "Seaborn Plot": {
+    "prefix": "da-sns",
+    "body": [
+      "fig, ax = plt.subplots(figsize=(${1:10}, ${2:6}))",
+      "sns.${3|histplot,boxplot,scatterplot,heatmap,pairplot|}(",
+      "    data=${4:df},",
+      "    x='${5:col}',",
+      "    ax=ax",
+      ")",
+      "ax.set_title('${6:Title}')",
+      "plt.tight_layout()",
+      "plt.show()",
+      "$0"
+    ],
+    "description": "Seaborn plot template"
+  },
+
+  // ===== ML PIPELINES =====
+  "ML Pipeline": {
+    "prefix": "ml-pipeline",
+    "body": [
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.preprocessing import StandardScaler",
+      "from sklearn.${1|ensemble,linear_model,svm,neighbors|}.${2:RandomForestClassifier} import ${2:RandomForestClassifier}",
+      "from sklearn.metrics import classification_report, confusion_matrix",
+      "",
+      "# Split",
+      "X_train, X_test, y_train, y_test = train_test_split(",
+      "    X, y, test_size=${3:0.2}, random_state=${4:42}",
+      ")",
+      "",
+      "# Scale",
+      "scaler = StandardScaler()",
+      "X_train = scaler.fit_transform(X_train)",
+      "X_test = scaler.transform(X_test)",
+      "",
+      "# Train",
+      "model = ${2:RandomForestClassifier}(random_state=${4:42})",
+      "model.fit(X_train, y_train)",
+      "",
+      "# Evaluate",
+      "y_pred = model.predict(X_test)",
+      "print(classification_report(y_test, y_pred))",
+      "$0"
+    ],
+    "description": "Sklearn ML pipeline with metrics"
+  },
+
+  "Cross Validation": {
+    "prefix": "ml-cv",
+    "body": [
+      "from sklearn.model_selection import cross_val_score",
+      "",
+      "scores = cross_val_score(${1:model}, X, y, cv=${2:5}, scoring='${3|accuracy,f1,roc_auc,r2,neg_mean_squared_error|}')",
+      "print(f'CV scores: {scores}')",
+      "print(f'Mean: {scores.mean():.4f} ± {scores.std():.4f}')",
+      "$0"
+    ],
+    "description": "Cross validation block"
+  },
+
+  // ===== NOTEBOOK HEADERS =====
+  "Jupyter Notebook Header": {
+    "prefix": "nb-header",
+    "body": [
+      "\"\"\"",
+      "Analysis: ${1:Analysis Name}",
+      "Author: George Dreemer",
+      "Date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "\"\"\"",
+      "",
+      "import pandas as pd",
+      "import numpy as np",
+      "import matplotlib.pyplot as plt",
+      "import seaborn as sns",
+      "%matplotlib inline",
+      "",
+      "# Configuration",
+      "pd.set_option('display.max_columns', None)",
+      "pd.set_option('display.float_format', '{:.4f}'.format)",
+      "plt.style.use('${2|seaborn-v0_8-darkgrid,seaborn-v0_8-whitegrid,ggplot,dark_background|}')",
+      "sns.set_theme(style='${3|darkgrid,whitegrid,dark,white,ticks|}')",
+      "",
+      "$0"
+    ],
+    "description": "Jupyter notebook standard header"
+  },
+
+  // ===== PYTHON UTILITIES =====
+  "Timer Block": {
+    "prefix": "py-timer",
+    "body": [
+      "import time",
+      "start = time.time()",
+      "",
+      "${1:# Your code here}",
+      "",
+      "elapsed = time.time() - start",
+      "print(f'Elapsed: {elapsed:.2f}s')",
+      "$0"
+    ],
+    "description": "Simple execution timer"
+  },
+
+  "Logging Setup": {
+    "prefix": "py-logging",
+    "body": [
+      "import logging",
+      "",
+      "logging.basicConfig(",
+      "    level=logging.${1|DEBUG,INFO,WARNING,ERROR|},",
+      "    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'",
+      ")",
+      "logger = logging.getLogger(__name__)",
+      "$0"
+    ],
+    "description": "Standard logging setup"
+  },
+
+  "Dataclass": {
+    "prefix": "py-dataclass",
+    "body": [
+      "from dataclasses import dataclass, field",
+      "from typing import ${1:List}",
+      "",
+      "@dataclass",
+      "class ${2:MyClass}:",
+      "    ${3:name}: str",
+      "    ${4:value}: ${5:float} = ${6:0.0}",
+      "    $0"
+    ],
+    "description": "Python dataclass template"
+  },
+
+  "Type-hinted function": {
+    "prefix": "py-func",
+    "body": [
+      "def ${1:function_name}(${2:param}: ${3:type}) -> ${4:return_type}:",
+      "    \"\"\"${5:Docstring.}\"\"\"",
+      "    ${6:pass}",
+      "    $0"
+    ],
+    "description": "Type-hinted function with docstring"
+  },
+
+  // ===== WEB / API =====
+  "FastAPI Route": {
+    "prefix": "api-route",
+    "body": [
+      "@app.${1|get,post,put,delete|}('/${2:endpoint}')",
+      "async def ${3:handler}(${4:param}: ${5:str}) -> ${6:dict}:",
+      "    \"\"\"${7:Route description.}\"\"\"",
+      "    return {\"${8:key}\": ${4:param}}",
+      "$0"
+    ],
+    "description": "FastAPI route handler"
+  }
+}
+
