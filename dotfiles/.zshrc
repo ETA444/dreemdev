@@ -48,9 +48,9 @@ alias la='ls -A'
 alias l='ls -lh'
 
 # Quick up-directory
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
+alias ..='cd .. && ls'
+alias ...='cd ../.. && ls'
+alias ....='cd ../../.. && ls'
 
 # Clear terminal
 alias c='clear'
