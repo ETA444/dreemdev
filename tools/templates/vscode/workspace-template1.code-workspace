@@ -1,0 +1,110 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+
+  "settings": {
+    // Python interpreter — uses .venv by convention
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+
+    // Testing
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+    "python.testing.unittestEnabled": false,
+
+    // Language-specific Python settings
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+      }
+    },
+
+    // Ruff
+    "ruff.importStrategy": "fromEnvironment",
+    "ruff.lint.run": "onSave",
+
+    // Jupyter
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+
+    // File exclusions (project level)
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.venv": true,
+      "**/venv": true,
+      "**/*.pyc": true,
+      "**/.ipynb_checkpoints": true,
+      "**/.DS_Store": true
+    },
+
+    "search.exclude": {
+      "**/.venv": true,
+      "**/venv": true,
+      "**/.ipynb_checkpoints": true
+    }
+  },
+
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        // Run any open Python file
+        "name": "Python: Current File",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${file}",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+      {
+        // Run pytest with debugger attached
+        "name": "Python: Debug Tests",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "pytest",
+        "args": ["tests", "-v"],
+        "console": "integratedTerminal",
+        "justMyCode": false
+      },
+      {
+        // Run a specific entrypoint (rename as needed per project)
+        "name": "Python: Run main.py",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/main.py",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+      {
+        // Attach to a running Python process (useful for APIs/servers)
+        "name": "Python: Attach",
+        "type": "debugpy",
+        "request": "attach",
+        "connect": {
+          "host": "localhost",
+          "port": 5678
+        },
+        "justMyCode": true
+      }
+    ]
+  },
+
+  // Recommend extensions to anyone who opens this workspace
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "charliermarsh.ruff",
+      "ms-toolsai.jupyter",
+      "ms-toolsai.datawrangler",
+      "eamodio.gitlens"
+    ]
+  }
+}
+
