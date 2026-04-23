@@ -98,5 +98,10 @@
   // ===== SECURITY =====
   "security.workspace.trust.untrustedFiles": "open",
   "telemetry.telemetryLevel": "off",
-  "jupyter.interactiveWindow.textEditor.executeSelection": true
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "workbench.editor.autoLockGroups": {
+    "mainThreadWebview-markdown.preview": true,
+    "jupyter-notebook": true,
+    "jupyter-data-wrangler": true
+  }
 }
