@@ -53,7 +53,6 @@
   // ===== JUPYTER / DATA SCIENCE =====
   "jupyter.notebookFileRoot": "${workspaceFolder}",
   "jupyter.askForKernelRestart": false,
-  "jupyter.sendSelectionToInteractiveWindow": true,
   // ===== GIT CONFIGURATION =====
   "git.autofetch": true,
   "git.autorefresh": true,
@@ -98,5 +97,6 @@
   },
   // ===== SECURITY =====
   "security.workspace.trust.untrustedFiles": "open",
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "jupyter.interactiveWindow.textEditor.executeSelection": true
 }
