@@ -1,5 +1,4 @@
 {
-  // ===== DATA LOADING & EXPLORATION =====
   "Data Analysis Template": {
     "prefix": "da-start",
     "body": [
@@ -23,7 +22,6 @@
     ],
     "description": "Quick data analysis starter"
   },
-
   "EDA Block": {
     "prefix": "da-eda",
     "body": [
@@ -40,8 +38,6 @@
     ],
     "description": "EDA quick checks"
   },
-
-  // ===== VISUALISATION =====
   "Plot Template": {
     "prefix": "da-plot",
     "body": [
@@ -57,7 +53,6 @@
     ],
     "description": "Matplotlib figure template with common axis methods"
   },
-
   "Seaborn Plot": {
     "prefix": "da-sns",
     "body": [
@@ -74,8 +69,6 @@
     ],
     "description": "Seaborn plot template"
   },
-
-  // ===== ML PIPELINES =====
   "ML Pipeline": {
     "prefix": "ml-pipeline",
     "body": [
@@ -105,7 +98,6 @@
     ],
     "description": "Sklearn ML pipeline with metrics"
   },
-
   "Cross Validation": {
     "prefix": "ml-cv",
     "body": [
@@ -118,8 +110,6 @@
     ],
     "description": "Cross validation block"
   },
-
-  // ===== NOTEBOOK HEADERS =====
   "Jupyter Notebook Header": {
     "prefix": "nb-header",
     "body": [
@@ -145,8 +135,6 @@
     ],
     "description": "Jupyter notebook standard header"
   },
-
-  // ===== PYTHON UTILITIES =====
   "Timer Block": {
     "prefix": "py-timer",
     "body": [
@@ -161,7 +149,6 @@
     ],
     "description": "Simple execution timer"
   },
-
   "Logging Setup": {
     "prefix": "py-logging",
     "body": [
@@ -176,7 +163,6 @@
     ],
     "description": "Standard logging setup"
   },
-
   "Dataclass": {
     "prefix": "py-dataclass",
     "body": [
@@ -191,7 +177,6 @@
     ],
     "description": "Python dataclass template"
   },
-
   "Type-hinted function": {
     "prefix": "py-func",
     "body": [
@@ -202,8 +187,6 @@
     ],
     "description": "Type-hinted function with docstring"
   },
-
-  // ===== WEB / API =====
   "FastAPI Route": {
     "prefix": "api-route",
     "body": [
@@ -216,4 +199,3 @@
     "description": "FastAPI route handler"
   }
 }
-
