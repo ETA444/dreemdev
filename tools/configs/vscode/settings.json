@@ -21,6 +21,8 @@
   "window.zoomLevel": 0,
   "workbench.editor.enablePreview": false,
   // ===== PYTHON CONFIGURATION =====
+  // snippets handling
+  "editor.snippetSuggestions": "top",
   // python.defaultInterpreterPath removed from global settings intentionally.
   // Set it per-project in .vscode/settings.json for repos that use a .venv.
   "python.analysis.typeCheckingMode": "basic",
