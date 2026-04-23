@@ -6,19 +6,20 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.wordWrap": "on",
-  "editor.rulers": [80, 120],
+  "editor.rulers": [
+    80,
+    120
+  ],
   "editor.renderWhitespace": "selection",
   "editor.insertSpaces": true,
   "editor.tabSize": 4,
   "editor.detectIndentation": true,
-
   // ===== THEME & APPEARANCE =====
   "workbench.colorTheme": "Dracula",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
   "window.zoomLevel": 0,
   "workbench.editor.enablePreview": false,
-
   // ===== PYTHON CONFIGURATION =====
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
@@ -26,7 +27,6 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.terminal.activateEnvironment": true,
-
   // Language-specific Python editor settings
   "[python]": {
     // Use Ruff as formatter (requires charliermarsh.ruff extension)
@@ -37,11 +37,9 @@
       "source.fixAll": "explicit"
     }
   },
-
   // Ruff extension configuration
   "ruff.importStrategy": "fromEnvironment",
   "ruff.lint.run": "onSave",
-
   // Black extension configuration (commented out since Ruff is main rn)
   // and uncomment these two:
   // "python.formatting.provider": "black",
@@ -52,12 +50,10 @@
   //     "source.organizeImports": "explicit"
   //   }
   // },
-
   // ===== JUPYTER / DATA SCIENCE =====
   "jupyter.notebookFileRoot": "${workspaceFolder}",
   "jupyter.askForKernelRestart": false,
   "jupyter.sendSelectionToInteractiveWindow": true,
-
   // ===== GIT CONFIGURATION =====
   "git.autofetch": true,
   "git.autorefresh": true,
@@ -65,13 +61,11 @@
   "gitlens.hovers.currentLine.enabled": false,
   "gitlens.statusBar.enabled": true,
   "gitlens.codeLens.enabled": true,
-
   // ===== TERMINAL =====
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.fontSize": 12,
   "terminal.integrated.lineHeight": 1.5,
   "terminal.integrated.inheritEnv": true,
-
   // ===== FILES & EXCLUDE =====
   "files.exclude": {
     "**/__pycache__": true,
@@ -85,7 +79,6 @@
   },
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-
   // ===== SEARCH =====
   "search.exclude": {
     "**/node_modules": true,
@@ -94,17 +87,16 @@
     "**/.venv": true,
     "**/.ipynb_checkpoints": true
   },
-
   // ===== EXTENSIONS =====
   "extensions.ignoreRecommendations": false,
-
   // ===== MARKDOWN & DOCUMENTATION =====
   "[markdown]": {
     "editor.wordWrap": "on",
     "editor.formatOnSave": false
   },
-
   // ===== SECURITY =====
-  "security.workspace.trust.untrustedFiles": "open"
+  "security.workspace.trust.untrustedFiles": "open",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "telemetry.telemetryLevel": "off"
 }
-
