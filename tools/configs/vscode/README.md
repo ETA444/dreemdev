@@ -42,25 +42,11 @@ Note: All are symlinked to the actual system paths by `setup-vscode-symlinks.sh`
 - `` ctrl+` ``: Toggle integrated terminal.
 - `cmd+shift+y`: Toggle output panel.
 
-### `snippets/python.json` highlights
+### `snippets/python.code-snippets` highlights
 
 Snippets are triggered by typing the prefix and pressing `Tab` in any Python file or Jupyter cell.
 
-| Prefix | What it inserts |
-|--------|----------------|
-| `da-start` | Full data analysis starter (pandas, numpy, matplotlib, seaborn) |
-| `da-eda` | EDA quick checks (missing values, distributions, correlation) |
-| `da-plot` | Matplotlib figure template with axis labels, legend, tight layout |
-| `da-sns` | Seaborn plot template with choice dropdown for plot type |
-| `ml-pipeline` | Sklearn train/test split → scale → train → classification report |
-| `ml-cv` | Cross-validation block with score choice dropdown |
-| `nb-header` | Jupyter notebook header with auto-filled date, style options |
-| `py-timer` | Execution timer block |
-| `py-logging` | Standard logging setup with level dropdown |
-| `py-dataclass` | Python dataclass template with type hints |
-| `py-func` | Type-hinted function with docstring |
-| `api-route` | FastAPI route handler with method dropdown |
-
+A detailed manual for the snippets can be found here: `tools/configs/vscode/snippets/README.md`
 
 ---
 ## `setup-vscode-extensions.sh` in detail
@@ -80,9 +66,9 @@ code --install-extension ms-toolsai.python-ds-extension-pack
 
 Notes:
 
-- `ms-python.python` and `ms-python.vscode-pylance` are the core Python + language server stack.  
-- `ms-python.jupyter` and `ms-toolsai.jupyter` give first‑class Jupyter notebook support. [web:127]  
-- `ms-toolsai.datawrangler` adds a visual data grid and transformations, similar to GUI data tools. [web:125]  
+- `ms-python.python` and `ms-python.vscode-pylance` are the core Python + language server stack.
+- `ms-python.jupyter` and `ms-toolsai.jupyter` give first‑class Jupyter notebook support. [web:127]
+- `ms-toolsai.datawrangler` adds a visual data grid and transformations, similar to GUI data tools. [web:125]
 - `ms-toolsai.python-ds-extension-pack` is Microsoft’s curated pack for Python data science work in VS Code. [web:125]
 
 ---
@@ -99,8 +85,8 @@ code --install-extension ms-vscode.makefile-tools
 
 Notes:
 
-- `ruff` is the modern, fast linter that can replace/aggregate many older tools. [web:106]  
-- `black-formatter`, `isort`, and `flake8` cover formatting, imports, and extra linting. [web:108]  
+- `ruff` is the modern, fast linter that can replace/aggregate many older tools. [web:106]
+- `black-formatter`, `isort`, and `flake8` cover formatting, imports, and extra linting. [web:108]
 - `makefile-tools` helps with running Make-based workflows (CI, data pipelines, etc.). [web:115]
 
 ---
@@ -116,9 +102,9 @@ code --install-extension github.vscode-pull-request-github
 
 Notes:
 
-- `GitLens` is the main Git “superpower” extension (blame, history, insights). [web:102]  
-- `git-graph` gives me a visual commit graph.  
-- `githistory` provides per-file history and diff views.  
+- `GitLens` is the main Git “superpower” extension (blame, history, insights). [web:102]
+- `git-graph` gives me a visual commit graph.
+- `githistory` provides per-file history and diff views.
 - `vscode-pull-request-github` integrates GitHub PRs and reviews directly into VS Code. [web:101]
 
 ---
@@ -135,10 +121,10 @@ code --install-extension iterative.dvc
 
 Notes:
 
-- `remote-ssh` lets me work on remote machines as if they were local. [web:110]  
-- `remote-containers` enables Dev Containers, great for reproducible data/ML environments. [web:110]  
-- `vscode-docker` brings Docker management into the IDE.  
-- `hashicorp.terraform` supports infrastructure-as-code.  
+- `remote-ssh` lets me work on remote machines as if they were local. [web:110]
+- `remote-containers` enables Dev Containers, great for reproducible data/ML environments. [web:110]
+- `vscode-docker` brings Docker management into the IDE.
+- `hashicorp.terraform` supports infrastructure-as-code.
 - `iterative.dvc` integrates DVC into VS Code for data/experiment versioning. [web:106]
 
 ---
@@ -158,12 +144,12 @@ code --install-extension ms-vscode.live-server
 
 Notes:
 
-- `even-better-toml` and `vscode-yaml` cover common config formats (pyproject, CI, K8s, etc.). [web:102]  
-- `todo-tree` surfaces TODO/FIXME across the codebase.  
-- `Prettier` formats JS/TS/HTML/CSS and complements Black for Python. [web:133]  
-- `code-spell-checker` catches typos in code and docs. [web:101]  
-- `fileutils` speeds up creating/moving/renaming files.  
-- `errorlens` brings diagnostics inline, closer to JetBrains IDE behavior. [web:106]  
+- `even-better-toml` and `vscode-yaml` cover common config formats (pyproject, CI, K8s, etc.). [web:102]
+- `todo-tree` surfaces TODO/FIXME across the codebase.
+- `Prettier` formats JS/TS/HTML/CSS and complements Black for Python. [web:133]
+- `code-spell-checker` catches typos in code and docs. [web:101]
+- `fileutils` speeds up creating/moving/renaming files.
+- `errorlens` brings diagnostics inline, closer to JetBrains IDE behavior. [web:106]
 - `live-server` is handy for quick web previews during dev.
 
 ---
@@ -179,8 +165,8 @@ code --install-extension TabNine.tabnine-vscode
 
 Notes:
 
-- `GitHub.copilot` + `GitHub.copilot-chat` serve as the main pair programmer and in‑editor chat. [web:128][web:134]  
-- `Continue` is an open, model‑agnostic assistant that can connect to different LLMs. [web:113][web:131]  
+- `GitHub.copilot` + `GitHub.copilot-chat` serve as the main pair programmer and in‑editor chat. [web:128][web:134]
+- `Continue` is an open, model‑agnostic assistant that can connect to different LLMs. [web:113][web:131]
 - `Tabnine` is a privacy‑focused completion engine. [web:102][web:134]
 
 ---
@@ -195,8 +181,8 @@ code --install-extension JuanBlanco.solidity
 
 Notes:
 
-- `ESLint` is the standard JS/TS linter. [web:102]  
-- `template-string-converter` makes working with JS template strings nicer.  
+- `ESLint` is the standard JS/TS linter. [web:102]
+- `template-string-converter` makes working with JS template strings nicer.
 - `solidity` adds syntax highlighting, linting, and tooling for smart contracts.
 
 ---
