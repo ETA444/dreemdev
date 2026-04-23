@@ -19,6 +19,7 @@ code --install-extension ms-python.vscode-pylance $FORCE_FLAG
 code --install-extension ms-toolsai.jupyter $FORCE_FLAG
 code --install-extension ms-toolsai.datawrangler $FORCE_FLAG
 code --install-extension ms-toolsai.python-ds-extension-pack $FORCE_FLAG
+code --install-extension MattyStacks.sieve-language-support $FORCE_FLAG
 
 ############################
 # Code Quality, Typing & Tasks
@@ -47,7 +48,7 @@ code --install-extension ms-vscode-remote.remote-ssh $FORCE_FLAG
 code --install-extension ms-vscode-remote.remote-containers $FORCE_FLAG
 code --install-extension ms-azuretools.vscode-docker $FORCE_FLAG
 code --install-extension hashicorp.terraform $FORCE_FLAG
-code --install-extension iterative.dvc $FORCE_FLAG
+# [depreciated] code --install-extension iterative.dvc $FORCE_FLAG
 
 ############################
 # Productivity & Files
