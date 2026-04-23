@@ -90,19 +90,24 @@ elsif allof (
       "abn-amro",
       "revolut",
       "unicredit bulbank",
-      "unicreditbulbank"
+      "unicreditbulbank",
+	    "venmo",
+	    "robinhood"
     ],
     header :contains "subject" [
       "ABN AMRO",
       "Revolut",
-      "UniCredit Bulbank"
+      "UniCredit Bulbank",
+	    "Venmo Quarterly Statement"
     ],
     address :domain :is "from" [
       "nl.abnamro.com",
       "abnamro.com",
       "revolut.com",
       "unicreditgroup.bg",
-      "unicreditbulbank.bg"
+      "unicreditbulbank.bg",
+	    "venmo.com",
+	    "robinhood.com"
     ]
   )
 )

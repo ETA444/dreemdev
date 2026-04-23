@@ -40,7 +40,8 @@ if anyof (
     "two-step verification",
     "multi-factor authentication",
     "mfa code",
-	"please verify your device"
+    "please verify your device",
+	  "Passcode:"
   ],
 
   /* Login / sign-in verification flows */

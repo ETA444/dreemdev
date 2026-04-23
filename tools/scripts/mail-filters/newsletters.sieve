@@ -70,10 +70,12 @@ elsif anyof (
     "santiment analytics",
     "symbiosis finance",
     "save finance",
+	  "sentora research",
     "polymarket",
     "coinmarketcap",
     "defi",
-    "onchain data"
+    "onchain data",
+	  "Trump Media & Technology Group"
   ],
   header :contains "subject" [
     "CoinGecko",
@@ -91,7 +93,9 @@ elsif anyof (
     "crypto markets",
     "on-chain data",
     "onchain data",
-    "DeFi update"
+    "DeFi update",
+    "BTC",
+	  "ETH"
   ]
 )
 {
@@ -117,7 +121,7 @@ elsif anyof (
     "physorg",
     "medical news",
     "science daily",
-	"universetoday"
+	  "universetoday"
   ],
   header :contains "subject" [
     "Medscape",
@@ -137,4 +141,3 @@ elsif anyof (
   fileinto "Studix/Science";
   stop;
 }
-

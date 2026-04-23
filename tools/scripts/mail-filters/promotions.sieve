@@ -93,6 +93,7 @@ if anyof (
     "askyurself.com",
     "bape.com",
     "brokenheartofficial.com",
+	  "brokenplanet.com",
     "chaosgone.global",
     "corteiz.com",
     "crocs-email.com",
@@ -106,6 +107,7 @@ if anyof (
     "enternostalgia.com",
 	"eu.youngla.com",
     "eu.supreme.com",
+	"ekster.com",
     "fainz.de",
     "falsebranding.com",
     "fearofgod.com",
@@ -140,13 +142,16 @@ if anyof (
     "news.vans.com",
 	"nocta.com",
     "notbasic.de",
+	"onvandylab.org",
     "octobersveryown.net",
     "palandra.com.pl",
+	"pitviper.com",
     "psychwardusa.com",
     "rareeverywhere.com",
     "ransom.store",
     "representclo.com",
     "revenge.io",
+	"reliked.com",
     "ridgewallet.eu",
     "section8official.com",
     "selectshop.eu",
@@ -156,6 +161,7 @@ if anyof (
     "supremenewyork.com",
     "superrradical.com",
     "syna.store",
+	"theharmonic.com.au",
     "trapstarlondon.com",
     "trendtvision.com",
     "vicinityclo.de",
@@ -208,6 +214,7 @@ if anyof (
       "krypt0wrld",
       "letmebeclear",
       "los angeles archive",
+	  "vandythepink",
       "vlone",
 	  "laarvee",
       "lostboysarchives",
@@ -225,12 +232,14 @@ if anyof (
       "otrium",
       "palandra",
 	  "palm angels",
+	  "pit viper",
       "psychwardusa",
       "rareeverywhere",
       "ransom",
       "representclo",
       "represent",
       "revenge",
+	  "reliked",
       "ridge wallet",
       "ridgewallet",
       "secretsales",
@@ -315,7 +324,7 @@ if anyof (
       "moistglobal",
       "more money more love",
       "mschf",
-      "nocta",
+	  "nocta",
       "notbasic",
       "octobers very own",
       "ovo",
@@ -387,7 +396,8 @@ elsif anyof (
     "better world books",
     "betterworldbooks",
     "bookdelivery",
-    "book delivery"
+    "book delivery",
+	"ascendingflame"
   ],
   header :contains "subject" [
     "Blackwell",
@@ -416,15 +426,15 @@ elsif anyof (
   header :contains "from" [
     "synology",
     "ardes",
-	"eufy",
+	  "eufy",
     "technopolis",
     "techno polis",
     "pc store",
     "pcstore",
     "pc shop",
     "pcshop",
-	"stardock software",
-	"software"
+	  "stardock software",
+    "software"
   ],
   header :contains "subject" [
     "Synology",
@@ -449,21 +459,26 @@ elsif anyof (
   header :contains "from" [
     "5% nutrition",
     "predator nutrition",
-    "nitro tiger",
+    "Nitrotiger.com",
     "sila bg",
     "fitness1",
     "ostrovit",
     "fitness",
     "bodybuilding",
-	"sneak energy",
-	"iHerb"
+	  "sneak energy",
+    "iHerb",
+    "Sneak",
+	  "Cheeky"
   ],
   header :contains "subject" [
     "gym",
     "fitness",
     "supplements",
     "vitamin",
-    "protein"
+    "protein",
+    "протеин",
+	  "креатин",
+	  "спорт"
   ]
 )
 {
@@ -490,8 +505,7 @@ elsif anyof (
     "ounass",
     "carrefour",
     "dubai store",
-    "dubai mall",
-	"arua"
+    "dubai mall"
   ],
 
   header :contains "subject" [
@@ -506,11 +520,12 @@ elsif anyof (
     "Ounass",
     "Carrefour",
     "apteka",
-	"аптека"
+	  "аптека"
   ],
 
   # Promo language (re-using general patterns)
   header :contains "subject" [
+	  "Вашето мнение относно закупуването на билети",
     "% off",
     "percent off",
     "off everything",
@@ -544,23 +559,23 @@ elsif anyof (
     "free shipping",
     "free delivery",
     "free gift",
-	"10%",
-	"15%",
+	  "10%",
+	  "15%",
     "20%",
     "25%",
     "30%",
-	"35%",
-	"40%",
-	"45%",
-	"50%",
-	"55%",
-	"60%",
+	  "35%",
+	  "40%",
+	  "45%",
+	  "50%",
+	  "55%",
+	  "60%",
     "65%",
     "70%",
     "75%",
-	"80%",
-	"85%",
-	"90%"
+	  "80%",
+	  "85%",
+	  "90%"
   ],
 
   # Other
@@ -569,13 +584,24 @@ elsif anyof (
     "thetoyshop",
     "toy shop",
     "toy store",
-	"BeatStars"
+	  "BeatStars",
+    "info@tamian.bg",
+    "Antoine de My American Shop",
+    "Аптеки Гален",
+	  "American Shop",
+	  "Albion Online",
+    "Albion",
+    "Sleep Cycle",
+    "Epic Games",
+    "Attitude Holland",
+    "Aquarelle Fleurs",
+    "Arua"
   ],
-
   header :contains "subject" [
     "The Entertainer",
     "TheToyShop",
-    "Toy Shop"
+    "Toy Shop",
+	  "unread messages"
   ]
 )
 {

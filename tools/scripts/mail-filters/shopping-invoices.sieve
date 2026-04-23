@@ -44,7 +44,21 @@ if header :contains "subject" [
   "ordered",
   "appointment",
   "factuur",
-  "betaling"
+  "betaling",
+  "фактура",
+  "фактури",
+  "плащане",
+  "касов бон",
+  "платени",
+  "неплатени",
+  "сметка",
+  "сметки",
+  "ePay.bg",
+  "pending bills",
+  "Pending bills in ePay.bg",
+  "subscription",
+  "renewed",
+  "Barber Studio"
 ]
 {
   fileinto "Shopping/Invoices";
@@ -116,13 +130,15 @@ if anyof (
     "deutsche bahn",
     "sncf",
     "omio",
-    "obilet"
+    "obilet",
+	  "union ivkoni"
   ]
 )
 {
   fileinto "Shopping/Tickets";
   stop;
 }
+
 
 ###############################################################################
 # Shopping – Tracking / Shipping notifications
@@ -154,14 +170,14 @@ elsif anyof (
     "out for delivery",
     "has been delivered",
     "your order has been delivered",
-	"delivered",
-	"dispatched",
-	"on the way",
-	"package",
-	"проследяване",
-	"пратка",
-	"еконт",
-	"пратки"
+	  "delivered",
+	  "dispatched",
+	  "on the way",
+	  "package",
+	  "проследяване",
+	  "пратка",
+	  "еконт",
+	  "пратки"
   ],
 
   # Courier / carrier names in From
@@ -218,7 +234,7 @@ elsif anyof (
   header :contains "from" [
     "stockx",
     "vinted",
-	"vendora",
+	  "vendora",
     "vestiaire collective",
     "vestiairecollective",
     "grailed",
@@ -231,7 +247,7 @@ elsif anyof (
   header :contains "subject" [
     "StockX",
     "Vinted",
-	"Vendora",
+	  "Vendora",
     "Vestiaire Collective",
     "Grailed",
     "Depop",
@@ -243,16 +259,15 @@ elsif anyof (
   address :domain :is "from" [
     "stockx.com",
     "vinted.com",
-	"vendora.bg",
+	  "vendora.bg",
     "vestiairecollective.com",
     "grailed.com",
     "depop.com",
     "goat.com",
-	"olx.bg"
+	  "olx.bg"
   ]
 )
 {
   fileinto "Shopping/Reselling";
   stop;
 }
-
