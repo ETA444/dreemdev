@@ -1,4 +1,75 @@
 {
+  // =====================
+  // 1. File / module headers
+  // =====================
+  "Python Script Header": {
+    "prefix": "py-header",
+    "body": [
+      "\"\"\"",
+      "Script: ${1:script_name}.py",
+      "Description: ${2:Short description of this script}.",
+      "Author: ${3:George Dreemer}",
+      "Created: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "\"\"\"",
+      "",
+      "from __future__ import annotations",
+      "",
+      "import logging",
+      "from pathlib import Path",
+      "",
+      "logging.basicConfig(",
+      "    level=logging.${4|INFO,DEBUG,WARNING,ERROR|},",
+      "    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'",
+      ")",
+      "logger = logging.getLogger(__name__)",
+      "",
+      "ROOT_DIR = Path(__file__).resolve().parent",
+      "DATA_DIR = ROOT_DIR / 'data'",
+      "OUTPUT_DIR = ROOT_DIR / 'output'",
+      "",
+      "",
+      "def main() -> None:",
+      "    \"\"\"${5:Entry point for the script.}\"\"\"",
+      "    ${6:logger.info(\"Starting script...\")}",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    main()",
+      "$0"
+    ],
+    "description": "Standard Python script header with logging and path constants"
+  },
+  "Jupyter Notebook Header": {
+    "prefix": "nb-header",
+    "body": [
+      "\"\"\"",
+      "Analysis: ${1:Analysis Name}",
+      "Author: ${2:George Dreemer}",
+      "Date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "\"\"\"",
+      "",
+      "import pandas as pd",
+      "import numpy as np",
+      "import matplotlib.pyplot as plt",
+      "import seaborn as sns",
+      "%matplotlib inline",
+      "",
+      "# Display configuration",
+      "pd.set_option('display.max_columns', None)",
+      "pd.set_option('display.width', 120)",
+      "pd.set_option('display.float_format', '{:.4f}'.format)",
+      "",
+      "# Plot configuration",
+      "plt.style.use('${3|seaborn-v0_8-darkgrid,seaborn-v0_8-whitegrid,ggplot,dark_background|}')",
+      "sns.set_theme(style='${4|darkgrid,whitegrid,dark,white,ticks|}')",
+      "",
+      "$0"
+    ],
+    "description": "Jupyter notebook standard header for data analysis"
+  },
+  // =====================
+  // 2. Data loading & basic EDA
+  // =====================
   "Data Analysis Template": {
     "prefix": "da-start",
     "body": [
@@ -6,39 +77,183 @@
       "import numpy as np",
       "import matplotlib.pyplot as plt",
       "import seaborn as sns",
+      "from pathlib import Path",
       "",
-      "# Load data",
-      "df = pd.read_csv('${1:data.csv}')",
+      "DATA_PATH = Path('${1:data}')",
+      "FILE_NAME = '${2:data.csv}'",
       "",
-      "# Explore",
-      "print(df.shape)",
+      "df = pd.read_csv(DATA_PATH / FILE_NAME)",
+      "",
+      "print(f'Shape: {df.shape}')",
       "print(df.dtypes)",
-      "df.head()",
+      "display(df.head())",
       "",
-      "# Summary stats",
-      "df.describe()",
+      "display(df.describe(include='all'))",
       "",
       "$0"
     ],
-    "description": "Quick data analysis starter"
+    "description": "Quick data analysis starter with pathlib and descriptive stats"
   },
-  "EDA Block": {
-    "prefix": "da-eda",
+  "EDA Overview Block": {
+    "prefix": "da-eda-overview",
     "body": [
-      "# Missing values",
-      "print(df.isnull().sum())",
+      "# --- EDA: Overview ---",
+      "print('Shape:', df.shape)",
+      "print('\nDtypes:')",
+      "print(df.dtypes)",
       "",
-      "# Distribution",
-      "df['${1:column}'].value_counts()",
+      "print('\nMissing values:')",
+      "print(df.isna().sum().sort_values(ascending=False))",
       "",
-      "# Correlation",
-      "df.corr(numeric_only=True)",
+      "print('\nUnique values per column:')",
+      "print(df.nunique().sort_values(ascending=False))",
       "",
       "$0"
     ],
-    "description": "EDA quick checks"
+    "description": "High-level EDA overview: shape, dtypes, missingness, cardinality"
   },
-  "Plot Template": {
+  "EDA Numeric Summary": {
+    "prefix": "da-eda-num",
+    "body": [
+      "# --- EDA: Numeric columns ---",
+      "num_cols = df.select_dtypes(include=['number']).columns.tolist()",
+      "print('Numeric columns:', num_cols)",
+      "",
+      "display(df[num_cols].describe().T)",
+      "",
+      "fig, axes = plt.subplots(nrows=${1:2}, ncols=${2:3}, figsize=(${3:16}, ${4:8}))",
+      "axes = axes.flatten()",
+      "for i, col in enumerate(num_cols[: len(axes)]):",
+      "    sns.histplot(df[col].dropna(), kde=True, ax=axes[i])",
+      "    axes[i].set_title(col)",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "Numeric EDA: describe and histogram grid"
+  },
+  "EDA Categorical Summary": {
+    "prefix": "da-eda-cat",
+    "body": [
+      "# --- EDA: Categorical columns ---",
+      "cat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()",
+      "print('Categorical columns:', cat_cols)",
+      "",
+      "for col in cat_cols:",
+      "    print(f'\nColumn: {col}')",
+      "    display(df[col].value_counts(dropna=False).head(${1:20}))",
+      "",
+      "$0"
+    ],
+    "description": "Categorical EDA: value counts for top categories"
+  },
+  "EDA Correlation Heatmap": {
+    "prefix": "da-eda-corr",
+    "body": [
+      "# --- EDA: Correlation heatmap ---",
+      "num_cols = df.select_dtypes(include=['number']).columns",
+      "corr = df[num_cols].corr(numeric_only=True)",
+      "",
+      "plt.figure(figsize=(${1:12}, ${2:8}))",
+      "sns.heatmap(corr, annot=False, cmap='coolwarm', center=0)",
+      "plt.title('${3:Correlation heatmap}')",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "Correlation heatmap for numeric columns"
+  },
+  "Missingness Heatmap": {
+    "prefix": "da-missing",
+    "body": [
+      "# --- Missingness heatmap ---",
+      "plt.figure(figsize=(${1:12}, ${2:6}))",
+      "sns.heatmap(df.isna(), cbar=False)",
+      "plt.title('${3:Missing values heatmap}')",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "Quick missingness heatmap"
+  },
+  // =====================
+  // 3. Pandas utilities
+  // =====================
+  "Memory Usage Summary": {
+    "prefix": "pd-mem",
+    "body": [
+      "# --- DataFrame memory usage ---",
+      "mem = df.memory_usage(deep=True).sum() / 1024 ** 2",
+      "print(f'Memory usage: {mem:.2f} MB')",
+      "",
+      "display(df.memory_usage(deep=True).sort_values(ascending=False) / 1024 ** 2)",
+      "",
+      "$0"
+    ],
+    "description": "Summarize DataFrame memory usage in MB"
+  },
+  "Optimize Dtypes": {
+    "prefix": "pd-optimize",
+    "body": [
+      "# --- Optimize dtypes for numeric and categorical columns ---",
+      "df_optimized = df.copy()",
+      "",
+      "for col in df_optimized.select_dtypes(include=['float']).columns:",
+      "    df_optimized[col] = pd.to_numeric(df_optimized[col], downcast='float')",
+      "",
+      "for col in df_optimized.select_dtypes(include=['integer']).columns:",
+      "    df_optimized[col] = pd.to_numeric(df_optimized[col], downcast='integer')",
+      "",
+      "for col in df_optimized.select_dtypes(include=['object']).columns:",
+      "    num_unique = df_optimized[col].nunique()",
+      "    num_total = len(df_optimized[col])",
+      "    if num_unique / num_total < ${1:0.5}:",
+      "        df_optimized[col] = df_optimized[col].astype('category')",
+      "",
+      "before = df.memory_usage(deep=True).sum() / 1024 ** 2",
+      "after = df_optimized.memory_usage(deep=True).sum() / 1024 ** 2",
+      "print(f'Before: {before:.2f} MB, After: {after:.2f} MB, Saved: {before - after:.2f} MB')",
+      "",
+      "$0"
+    ],
+    "description": "Heuristic dtype optimization for pandas DataFrames"
+  },
+  "Groupby Summary": {
+    "prefix": "pd-group",
+    "body": [
+      "group_cols = ['${1:group_col}']",
+      "agg_col = '${2:value_col}'",
+      "",
+      "summary = (",
+      "    df.groupby(group_cols)[agg_col]",
+      "      .agg(['count', 'mean', 'median', 'min', 'max'])",
+      ")",
+      "",
+      "display(summary.sort_values('mean', ascending=False).head(${3:10}))",
+      "",
+      "$0"
+    ],
+    "description": "Common groupby aggregation summary"
+  },
+  "Pivot Table": {
+    "prefix": "pd-pivot",
+    "body": [
+      "pivot = df.pivot_table(",
+      "    values='${1:value_col}',",
+      "    index='${2:index_col}',",
+      "    columns='${3:columns_col}',",
+      "    aggfunc='${4:mean}',",
+      ")",
+      "display(pivot.head())",
+      "",
+      "$0"
+    ],
+    "description": "Pivot table helper"
+  },
+  // =====================
+  // 4. Plotting
+  // =====================
+  "Matplotlib Plot Template": {
     "prefix": "da-plot",
     "body": [
       "fig, ax = plt.subplots(figsize=(${1:10}, ${2:6}))",
@@ -57,88 +272,243 @@
     "prefix": "da-sns",
     "body": [
       "fig, ax = plt.subplots(figsize=(${1:10}, ${2:6}))",
-      "sns.${3|histplot,boxplot,scatterplot,heatmap,pairplot|}(",
+      "sns.${3|histplot,boxplot,scatterplot,heatmap,violinplot,barplot|}(",
       "    data=${4:df},",
-      "    x='${5:col}',",
+      "    x='${5:x_col}',",
+      "    y='${6:y_col}',",
+      "    hue='${7:hue_col}',",
       "    ax=ax",
       ")",
-      "ax.set_title('${6:Title}')",
+      "ax.set_title('${8:Title}')",
       "plt.tight_layout()",
       "plt.show()",
       "$0"
     ],
-    "description": "Seaborn plot template"
+    "description": "Seaborn plot template with common parameters"
   },
-  "ML Pipeline": {
+  "Seaborn Pairplot": {
+    "prefix": "da-pairplot",
+    "body": [
+      "sns.pairplot(",
+      "    data=${1:df},",
+      "    vars=${2:['col1', 'col2', 'col3']},",
+      "    hue='${3:target}',",
+      "    corner=True",
+      ")",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "Quick seaborn pairplot"
+  },
+  // =====================
+  // 5. Scikit-learn ML pipelines
+  // =====================
+  "ML Supervised Pipeline": {
     "prefix": "ml-pipeline",
     "body": [
       "from sklearn.model_selection import train_test_split",
       "from sklearn.preprocessing import StandardScaler",
-      "from sklearn.${1|ensemble,linear_model,svm,neighbors|}.${2:RandomForestClassifier} import ${2:RandomForestClassifier}",
+      "from sklearn.pipeline import Pipeline",
+      "from sklearn.${1|linear_model,ensemble,svm,neighbors|} import ${2:LogisticRegression}",
       "from sklearn.metrics import classification_report, confusion_matrix",
       "",
-      "# Split",
+      "FEATURE_COLS = ${3:['col1', 'col2']}",
+      "TARGET_COL = '${4:target}'",
+      "",
+      "X = df[FEATURE_COLS]",
+      "y = df[TARGET_COL]",
+      "",
       "X_train, X_test, y_train, y_test = train_test_split(",
-      "    X, y, test_size=${3:0.2}, random_state=${4:42}",
+      "    X, y, test_size=${5:0.2}, random_state=${6:42}, stratify=y",
       ")",
       "",
-      "# Scale",
-      "scaler = StandardScaler()",
-      "X_train = scaler.fit_transform(X_train)",
-      "X_test = scaler.transform(X_test)",
+      "clf = Pipeline(steps=[",
+      "    ('scaler', StandardScaler()),",
+      "    ('model', ${2:LogisticRegression}()),",
+      "])",
       "",
-      "# Train",
-      "model = ${2:RandomForestClassifier}(random_state=${4:42})",
-      "model.fit(X_train, y_train)",
+      "clf.fit(X_train, y_train)",
+      "y_pred = clf.predict(X_test)",
       "",
-      "# Evaluate",
-      "y_pred = model.predict(X_test)",
       "print(classification_report(y_test, y_pred))",
+      "print(confusion_matrix(y_test, y_pred))",
+      "",
       "$0"
     ],
-    "description": "Sklearn ML pipeline with metrics"
+    "description": "Standard supervised classification pipeline with scaling and metrics"
+  },
+  "ML Regression Pipeline": {
+    "prefix": "ml-reg-pipeline",
+    "body": [
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.preprocessing import StandardScaler",
+      "from sklearn.pipeline import Pipeline",
+      "from sklearn.${1|linear_model,ensemble,svm,neighbors|} import ${2:RandomForestRegressor}",
+      "from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score",
+      "",
+      "FEATURE_COLS = ${3:['col1', 'col2']}",
+      "TARGET_COL = '${4:target}'",
+      "",
+      "X = df[FEATURE_COLS]",
+      "y = df[TARGET_COL]",
+      "",
+      "X_train, X_test, y_train, y_test = train_test_split(",
+      "    X, y, test_size=${5:0.2}, random_state=${6:42}",
+      ")",
+      "",
+      "reg = Pipeline(steps=[",
+      "    ('scaler', StandardScaler()),",
+      "    ('model', ${2:RandomForestRegressor}()),",
+      "])",
+      "",
+      "reg.fit(X_train, y_train)",
+      "y_pred = reg.predict(X_test)",
+      "",
+      "mae = mean_absolute_error(y_test, y_pred)",
+      "rmse = mean_squared_error(y_test, y_pred, squared=False)",
+      "r2 = r2_score(y_test, y_pred)",
+      "print(f'MAE: {mae:.4f}, RMSE: {rmse:.4f}, R2: {r2:.4f}')",
+      "",
+      "$0"
+    ],
+    "description": "Regression pipeline with scaling and common regression metrics"
   },
   "Cross Validation": {
     "prefix": "ml-cv",
     "body": [
       "from sklearn.model_selection import cross_val_score",
       "",
-      "scores = cross_val_score(${1:model}, X, y, cv=${2:5}, scoring='${3|accuracy,f1,roc_auc,r2,neg_mean_squared_error|}')",
+      "scores = cross_val_score(",
+      "    estimator=${1:model},",
+      "    X=${2:X},",
+      "    y=${3:y},",
+      "    cv=${4:5},",
+      "    scoring='${5|accuracy,f1,roc_auc,r2,neg_mean_squared_error|}'",
+      ")",
       "print(f'CV scores: {scores}')",
       "print(f'Mean: {scores.mean():.4f} ± {scores.std():.4f}')",
       "$0"
     ],
-    "description": "Cross validation block"
+    "description": "Generic cross validation block"
   },
-  "Jupyter Notebook Header": {
-    "prefix": "nb-header",
+  "Grid Search CV": {
+    "prefix": "ml-grid",
     "body": [
-      "\"\"\"",
-      "Analysis: ${1:Analysis Name}",
-      "Author: George Dreemer",
-      "Date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
-      "\"\"\"",
+      "from sklearn.model_selection import GridSearchCV",
       "",
-      "import pandas as pd",
-      "import numpy as np",
-      "import matplotlib.pyplot as plt",
-      "import seaborn as sns",
-      "%matplotlib inline",
+      "param_grid = {",
+      "    '${1:model_name}__${2:param}': [${3:values}],",
+      "}",
       "",
-      "# Configuration",
-      "pd.set_option('display.max_columns', None)",
-      "pd.set_option('display.float_format', '{:.4f}'.format)",
-      "plt.style.use('${2|seaborn-v0_8-darkgrid,seaborn-v0_8-whitegrid,ggplot,dark_background|}')",
-      "sns.set_theme(style='${3|darkgrid,whitegrid,dark,white,ticks|}')",
+      "grid = GridSearchCV(",
+      "    estimator=${4:pipe},",
+      "    param_grid=param_grid,",
+      "    cv=${5:5},",
+      "    scoring='${6|accuracy,f1,roc_auc,r2,neg_mean_squared_error|}',",
+      "    n_jobs=${7:-1},",
+      ")",
+      "",
+      "grid.fit(${8:X_train}, ${9:y_train})",
+      "print('Best params:', grid.best_params_)",
+      "print('Best score:', grid.best_score_)",
       "",
       "$0"
     ],
-    "description": "Jupyter notebook standard header"
+    "description": "Grid search cross-validation helper"
   },
+  // =====================
+  // 6. Evaluation plots
+  // =====================
+  "Classification Metrics & Confusion Matrix": {
+    "prefix": "ml-clf-metrics",
+    "body": [
+      "from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay",
+      "",
+      "print(classification_report(y_test, y_pred))",
+      "",
+      "cm = confusion_matrix(y_test, y_pred)",
+      "disp = ConfusionMatrixDisplay(confusion_matrix=cm)",
+      "disp.plot(cmap='Blues')",
+      "plt.title('${1:Confusion matrix}')",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "Classification report and confusion matrix plot"
+  },
+  "ROC Curve": {
+    "prefix": "ml-roc",
+    "body": [
+      "from sklearn.metrics import roc_curve, auc",
+      "",
+      "y_proba = ${1:model}.predict_proba(${2:X_test})[:, 1]",
+      "fpr, tpr, thresholds = roc_curve(${3:y_test}, y_proba)",
+      "roc_auc = auc(fpr, tpr)",
+      "",
+      "plt.figure(figsize=(${4:8}, ${5:6}))",
+      "plt.plot(fpr, tpr, label=f'ROC curve (AUC = {roc_auc:.3f})')",
+      "plt.plot([0, 1], [0, 1], 'k--')",
+      "plt.xlabel('False Positive Rate')",
+      "plt.ylabel('True Positive Rate')",
+      "plt.title('${6:ROC curve}')",
+      "plt.legend(loc='lower right')",
+      "plt.tight_layout()",
+      "",
+      "$0"
+    ],
+    "description": "ROC curve plot for binary classifier"
+  },
+  // =====================
+  // 7. DataSafari helpers
+  // =====================
+  "DataSafari Import & Explore": {
+    "prefix": "ds-explore",
+    "body": [
+      "import datasafari as ds",
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv('${1:data.csv}')",
+      "",
+      "# High-level DataFrame exploration in one line",
+      "ds.explorer.explore_df(df=df, target_variable='${2:target}', pipeline=${3:False})",
+      "",
+      "$0"
+    ],
+    "description": "Use DataSafari's explore_df helper for compact EDA"
+  },
+  "DataSafari predict_ml": {
+    "prefix": "ds-predict",
+    "body": [
+      "import datasafari as ds",
+      "",
+      "results = ds.predictor.predict_ml(",
+      "    df=${1:df},",
+      "    x_cols=${2:None},",
+      "    y_col='${3:target}',",
+      "    data_state='${4|unprocessed,preprocessed|}',",
+      "    n_top_models=${5:3},",
+      "    test_size=${6:0.2},",
+      "    cv=${7:5},",
+      "    random_state=${8:42},",
+      "    priority_metrics=${9:['accuracy']},",
+      "    verbose=${10:1},",
+      ")",
+      "",
+      "print(results.keys())",
+      "",
+      "$0"
+    ],
+    "description": "DataSafari predict_ml() one-liner style ML pipeline"
+  },
+  // =====================
+  // 8. Utility: timing, logging, functions, dataclasses
+  // =====================
   "Timer Block": {
     "prefix": "py-timer",
     "body": [
       "import time",
+      "",
       "start = time.time()",
       "",
       "${1:# Your code here}",
@@ -167,35 +537,95 @@
     "prefix": "py-dataclass",
     "body": [
       "from dataclasses import dataclass, field",
-      "from typing import ${1:List}",
+      "from typing import ${1:List, Optional}",
       "",
       "@dataclass",
       "class ${2:MyClass}:",
       "    ${3:name}: str",
       "    ${4:value}: ${5:float} = ${6:0.0}",
-      "    $0"
+      "    ${7:tags}: ${1:List}[str] = field(default_factory=list)",
+      "",
+      "    def __post_init__(self) -> None:",
+      "        ${8:pass}",
+      "",
+      "$0"
     ],
-    "description": "Python dataclass template"
+    "description": "Python dataclass template with post-init hook"
   },
   "Type-hinted function": {
     "prefix": "py-func",
     "body": [
-      "def ${1:function_name}(${2:param}: ${3:type}) -> ${4:return_type}:",
-      "    \"\"\"${5:Docstring.}\"\"\"",
-      "    ${6:pass}",
+      "from typing import ${1:Any}",
+      "",
+      "def ${2:function_name}(${3:param}: ${4:type}) -> ${5:return_type}:",
+      "    \"\"\"${6:Short description of the function.}\"\"\"",
+      "    ${7:raise NotImplementedError}\"\"\"",
       "    $0"
     ],
-    "description": "Type-hinted function with docstring"
+    "description": "Type-hinted function skeleton with docstring"
   },
+  // =====================
+  // 9. CLI / script utilities
+  // =====================
+  "Argparse CLI Main": {
+    "prefix": "py-cli",
+    "body": [
+      "import argparse",
+      "import logging",
+      "",
+      "logger = logging.getLogger(__name__)",
+      "",
+      "def parse_args() -> argparse.Namespace:",
+      "    parser = argparse.ArgumentParser(",
+      "        description='${1:Short description of your CLI}',",
+      "    )",
+      "    parser.add_argument('",
+      "        '--input',",
+      "        type=str,",
+      "        required=True,",
+      "        help='Path to input file',",
+      "    )",
+      "    parser.add_argument('",
+      "        '--verbose',",
+      "        action='store_true',",
+      "        help='Enable debug logging',",
+      "    )",
+      "    return parser.parse_args()",
+      "",
+      "",
+      "def main() -> None:",
+      "    args = parse_args()",
+      "    logging.basicConfig(",
+      "        level=logging.DEBUG if args.verbose else logging.INFO,",
+      "        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',",
+      "    )",
+      "    logger.info('Arguments: %s', args)",
+      "    ${2:# Your CLI logic here}",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    main()",
+      "",
+      "$0"
+    ],
+    "description": "Argparse-based CLI entrypoint with logging"
+  },
+  // =====================
+  // 10. FastAPI route
+  // =====================
   "FastAPI Route": {
     "prefix": "api-route",
     "body": [
+      "from fastapi import FastAPI",
+      "",
+      "app = FastAPI()",
+      "",
       "@app.${1|get,post,put,delete|}('/${2:endpoint}')",
       "async def ${3:handler}(${4:param}: ${5:str}) -> ${6:dict}:",
       "    \"\"\"${7:Route description.}\"\"\"",
       "    return {\"${8:key}\": ${4:param}}",
       "$0"
     ],
-    "description": "FastAPI route handler"
+    "description": "FastAPI route handler template"
   }
 }
