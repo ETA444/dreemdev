@@ -21,14 +21,12 @@
   "window.zoomLevel": 0,
   "workbench.editor.enablePreview": false,
   // ===== PYTHON CONFIGURATION =====
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": false,
+  // python.defaultInterpreterPath removed from global settings intentionally.
+  // Set it per-project in .vscode/settings.json for repos that use a .venv.
   "python.analysis.typeCheckingMode": "basic",
   "python.terminal.activateEnvironment": true,
   // Language-specific Python editor settings
   "[python]": {
-    // Use Ruff as formatter (requires charliermarsh.ruff extension)
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -37,10 +35,11 @@
     }
   },
   // Ruff extension configuration
+  // ruff.lint.run removed — deprecated ruff-lsp setting.
+  // On-save linting is handled via source.fixAll above.
   "ruff.importStrategy": "fromEnvironment",
-  "ruff.lint.run": "onSave",
-  // Black extension configuration (commented out since Ruff is main rn)
-  // and uncomment these two:
+  // Black extension configuration (commented out since Ruff is main formatter)
+  // To switch to Black, remove the [python] block above and uncomment:
   // "python.formatting.provider": "black",
   // "[python]": {
   //   "editor.defaultFormatter": "ms-python.black-formatter",
@@ -60,6 +59,8 @@
   "gitlens.hovers.currentLine.enabled": false,
   "gitlens.statusBar.enabled": true,
   "gitlens.codeLens.enabled": true,
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   // ===== TERMINAL =====
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.fontSize": 12,
@@ -95,7 +96,5 @@
   },
   // ===== SECURITY =====
   "security.workspace.trust.untrustedFiles": "open",
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   "telemetry.telemetryLevel": "off"
 }
