@@ -76,7 +76,6 @@ install_homebrew() {
     if confirm "Install Homebrew now?"; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       echo "Homebrew installed."
-      # Ensure brew is on PATH for this shell and future ones
       echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
       # shellcheck source=/dev/null
       eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -101,6 +100,72 @@ install_dev_languages() {
   fi
 
   echo -e "${GREEN}Language installation step complete.${RESET}"
+}
+
+install_ohmyzsh_and_plugins() {
+  echo -e "${CYAN}=== Installing Oh My Zsh and plugins ===${RESET}"
+
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    echo "Oh My Zsh not found; installing..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || {
+      echo -e "${YELLOW}Oh My Zsh installation failed or was interrupted.${RESET}"
+    }
+  else
+    echo "Oh My Zsh already installed at ~/.oh-my-zsh"
+  fi
+
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    echo -e "${YELLOW}Skipping plugin install because ~/.oh-my-zsh is missing.${RESET}"
+    return
+  fi
+
+  local zsh_custom
+  zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+  echo "Ensuring zsh-autosuggestions is installed..."
+  if [[ ! -d "$zsh_custom/plugins/zsh-autosuggestions" ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+      "$zsh_custom/plugins/zsh-autosuggestions" || \
+      echo -e "${YELLOW}Failed to clone zsh-autosuggestions.${RESET}"
+  else
+    echo "zsh-autosuggestions already present."
+  fi
+
+  echo "Ensuring zsh-syntax-highlighting is installed..."
+  if [[ ! -d "$zsh_custom/plugins/zsh-syntax-highlighting" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+      "$zsh_custom/plugins/zsh-syntax-highlighting" || \
+      echo -e "${YELLOW}Failed to clone zsh-syntax-highlighting.${RESET}"
+  else
+    echo "zsh-syntax-highlighting already present."
+  fi
+
+  echo -e "${GREEN}Oh My Zsh and plugins step complete. Make sure your .zshrc has the proper theme/plugins block with a safety guard.${RESET}"
+}
+
+install_aldente() {
+  echo -e "${CYAN}=== Installing AlDente (battery management) ===${RESET}"
+
+  if ! command -v brew >/dev/null 2>&1; then
+    echo -e "${YELLOW}Homebrew not available; skipping AlDente installation.${RESET}"
+    return
+  fi
+
+  if brew list --cask aldente &>/dev/null; then
+    echo "AlDente already installed."
+  else
+    if confirm "Install AlDente (battery charge limiter)?"; then
+      brew install --cask aldente
+      echo -e "${GREEN}AlDente installed.${RESET}"
+    fi
+  fi
+
+  echo -e "${CYAN}--- AlDente Optimal Config Reminder ---${RESET}"
+  echo "  1. Set Charge Limit to 80% (or 60-70% if mostly at desk)"
+  echo "  2. Enable Sailing Mode with range 75-80%"
+  echo "  3. Schedule a monthly calibration (full cycle)"
+  echo "  4. Consider AlDente Pro for heat protection & automation"
+  echo -e "${YELLOW}Launch AlDente from Applications and follow the onboarding.${RESET}"
 }
 
 configure_git() {
@@ -169,50 +234,6 @@ setup_ssh_key() {
 
   echo "Testing SSH connection to GitHub (you may be asked to confirm GitHub's fingerprint)..."
   ssh -T git@github.com || true
-}
-
-install_ohmyzsh_and_plugins() {
-  echo -e "${CYAN}=== Installing Oh My Zsh and plugins ===${RESET}"
-
-  # Install Oh My Zsh if missing
-  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-    echo "Oh My Zsh not found; installing..."
-    # Official install script
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || {
-      echo -e "${YELLOW}Oh My Zsh installation failed or was interrupted.${RESET}"
-    }
-  else
-    echo "Oh My Zsh already installed at ~/.oh-my-zsh"
-  fi
-
-  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-    echo -e "${YELLOW}Skipping plugin install because ~/.oh-my-zsh is missing.${RESET}"
-    return
-  fi
-
-  # Install plugins: zsh-autosuggestions & zsh-syntax-highlighting
-  local zsh_custom
-  zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-
-  echo "Ensuring zsh-autosuggestions is installed..."
-  if [[ ! -d "$zsh_custom/plugins/zsh-autosuggestions" ]]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions \
-      "$zsh_custom/plugins/zsh-autosuggestions" || \
-      echo -e "${YELLOW}Failed to clone zsh-autosuggestions.${RESET}"
-  else
-    echo "zsh-autosuggestions already present."
-  fi
-
-  echo "Ensuring zsh-syntax-highlighting is installed..."
-  if [[ ! -d "$zsh_custom/plugins/zsh-syntax-highlighting" ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-      "$zsh_custom/plugins/zsh-syntax-highlighting" || \
-      echo -e "${YELLOW}Failed to clone zsh-syntax-highlighting.${RESET}"
-  else
-    echo "zsh-syntax-highlighting already present."
-  fi
-
-  echo -e "${GREEN}Oh My Zsh and plugins step complete. Make sure your .zshrc has the proper theme/plugins block with a safety guard.${RESET}"
 }
 
 clone_dreemdev() {
@@ -405,16 +426,20 @@ main() {
     install_dev_languages
   fi
 
+  if confirm "Install Oh My Zsh with autosuggestions and syntax highlighting?"; then
+    install_ohmyzsh_and_plugins
+  fi
+
+  if confirm "Install AlDente (battery charge limiter)?"; then
+    install_aldente
+  fi
+
   if confirm "Configure global git user.name, user.email and editor?"; then
     configure_git
   fi
 
   if confirm "Setup SSH key and connect to GitHub?"; then
     setup_ssh_key
-  fi
-
-  if confirm "Install Oh My Zsh with autosuggestions and syntax highlighting?"; then
-    install_ohmyzsh_and_plugins
   fi
 
   if confirm "Clone dreemdev repo via SSH?"; then
@@ -440,5 +465,10 @@ main() {
   echo -e "${GREEN}All selected setup steps completed.${RESET}"
 }
 
-main
-
+# Zsh-safe guard: run main only when script is executed directly, not sourced.
+# Works in both Bash (BASH_SOURCE) and Zsh (ZSH_EVAL_CONTEXT).
+if [[ -n "${BASH_SOURCE[0]-}" && "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main
+elif [[ -z "${BASH_SOURCE[0]-}" && "${ZSH_EVAL_CONTEXT-}" == "toplevel" ]]; then
+  main
+fi
