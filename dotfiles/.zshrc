@@ -59,6 +59,49 @@ alias c='clear'
 # Shows a simple ASCII tree of the current directory
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
+
+# ==========================
+# App control (osascript)
+# ==========================
+
+# List all currently visible running apps (foreground only, no background daemons)
+alias apps="osascript -e 'tell application \"System Events\" to get the name of every process whose background only is false' | tr ',' '\n' | sed 's/^ //' | sort"
+
+# Quit a specific app by name: qapp "Comet"
+function qapp() {
+  osascript -e "with timeout of 15 seconds
+    quit app \"$1\"
+  end timeout" 2>/dev/null && echo "✓ Quit: $1" || echo "✗ Could not quit: $1 (not running or failed)"
+}
+
+# Quit all visible apps except a safe list
+function quitall() {
+  local keep=("Finder" "Terminal" "iTerm2" "iTerm" "Notes" "Visual Studio Code" "Perplexity" "Comet" "1Password" "Proton Mail" "NordVPN" "pCloud Drive")
+  local running
+  running=$(osascript -e 'tell application "System Events" to get the name of every process whose background only is false' | tr ',' '\n' | sed 's/^ //')
+  while IFS= read -r app; do
+    if [[ ! " ${keep[*]} " =~ " ${app} " ]]; then
+      osascript -e "with timeout of 10 seconds
+        quit app \"$app\"
+      end timeout" 2>/dev/null && echo "✓ Quit: $app" || echo "⚠ Skipped: $app"
+    else
+      echo "→ Kept:  $app"
+    fi
+  done <<< "$running"
+}
+
+# Hide all visible apps except Terminal and iTerm2
+alias hideall="osascript -e 'tell application \"System Events\" to set the visible of every process whose (background only is false and name is not \"Terminal\" and name is not \"iTerm2\") to false' && echo '✓ All apps hidden (Terminal kept)'"
+
+# Show all hidden apps
+alias showall="osascript -e 'tell application \"System Events\" to set the visible of every process to true' && echo '✓ All apps visible'"
+
+# Bring a specific app to front: fapp "Safari"
+function fapp() {
+  osascript -e "tell application \"$1\" to activate" 2>/dev/null && echo "✓ Focused: $1" || echo "✗ Could not focus: $1"
+}
+
+
 # ==========================
 # Apps & system
 # ==========================
