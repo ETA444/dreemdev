@@ -17,6 +17,111 @@ if [ -d "$ZSH" ]; then
 fi
 
 # ==========================
+# dreemdev help
+# ==========================
+
+function zhelp() {
+  echo ""
+  echo "\033[1;36m╔══════════════════════════════════════════════════════╗\033[0m"
+  echo "\033[1;36m║              dreemdev  ·  shell manual               ║\033[0m"
+  echo "\033[1;36m╚══════════════════════════════════════════════════════╝\033[0m"
+  echo ""
+
+  echo "\033[1;33m  CORE HELPERS\033[0m"
+  echo "  \033[1mzhelp\033[0m          Print .zshrc shell manual"
+  echo "  \033[1mzconfig\033[0m          Edit .zshrc and reload"
+  echo "  \033[1mzcommit\033[0m          Quick commit .zshrc to dreemdev"
+  echo "  \033[1mzlink\033[0m            Show ~/.zshrc symlink target"
+  echo "  \033[1mhome\033[0m             cd ~ and list"
+  echo "  \033[1mdesktop\033[0m          cd ~/Desktop and list"
+  echo "  \033[1mdownloads\033[0m        cd ~/Downloads and list"
+  echo "  \033[1mdev\033[0m              cd ~/dev and list"
+  echo "  \033[1mbuild\033[0m            cd ~/dev/projects and list"
+  echo "  \033[1mlearn\033[0m            cd ~/dev/learning and list"
+  echo "  \033[1mdreemdev\033[0m         cd ~/dev/dreemdev and list"
+  echo ""
+
+  echo "\033[1;33m  SHELL QoL\033[0m"
+  echo "  \033[1mll\033[0m               ls -lah (detailed list)"
+  echo "  \033[1mla\033[0m               ls -A (show hidden files)"
+  echo "  \033[1ml\033[0m                ls -lh (compact list)"
+  echo "  \033[1m..\033[0m               cd .. and list"
+  echo "  \033[1m...\033[0m              cd ../.. and list"
+  echo "  \033[1m....\033[0m             cd ../../.. and list"
+  echo "  \033[1mc\033[0m                clear terminal"
+  echo "  \033[1mtree\033[0m             ASCII directory tree (no install needed)"
+  echo ""
+
+  echo "\033[1;33m  APP CONTROL  \033[0;2m(osascript)\033[0m"
+  echo "  \033[1mapps\033[0m             List all visible running apps"
+  echo "  \033[1mqapp\033[0m \033[3m\"App\"\033[0m        Quit a specific app by name"
+  echo "  \033[1mquitall\033[0m          Quit all apps except the keep list"
+  echo "  \033[1mhideall\033[0m          Hide all app windows (Terminal kept)"
+  echo "  \033[1mshowall\033[0m          Unhide all apps"
+  echo "  \033[1mfapp\033[0m \033[3m\"App\"\033[0m        Bring a specific app to front"
+  echo ""
+
+  echo "\033[1;33m  APPS & SYSTEM\033[0m"
+  echo "  \033[1msys\033[0m              Open System Settings"
+  echo "  \033[1mf\033[0m                Open Finder"
+  echo "  \033[1mfcd\033[0m              Open Finder in current directory"
+  echo "  \033[1memptytrash\033[0m       Empty the Trash"
+  echo "  \033[1mlockmac\033[0m          Lock the screen"
+  echo "  \033[1mrstudio\033[0m          Open RStudio"
+  echo "  \033[1mproton\033[0m           Open Proton Mail"
+  echo "  \033[1mcomet\033[0m            Open Comet browser"
+  echo "  \033[1mgmail\033[0m            Open Gmail in Comet"
+  echo "  \033[1mperp\033[0m             Open Perplexity"
+  echo "  \033[1mnord\033[0m             Open NordVPN"
+  echo "  \033[1m1pass\033[0m            Open 1Password"
+  echo "  \033[1mpcloud\033[0m           Open pCloud Drive"
+  echo "  \033[1micloud\033[0m           Open iCloud Drive"
+  echo "  \033[1mpodcasts\033[0m         Open Podcasts"
+  echo "  \033[1mmusic\033[0m            Open Music"
+  echo "  \033[1mnotes\033[0m            Open Notes"
+  echo ""
+
+  echo "\033[1;33m  BROWSER SHORTCUTS\033[0m"
+  echo "  \033[1myoutube\033[0m          Open YouTube in Comet"
+  echo "  \033[1mgoogle\033[0m           Open Google in Comet"
+  echo "  \033[1mgithub\033[0m           Open your GitHub profile in Comet"
+  echo ""
+
+  echo "\033[1;33m  PYTHON & ENVIRONMENTS\033[0m"
+  echo "  \033[1mpython\033[0m           Alias for python3"
+  echo "  \033[1mpip\033[0m              Alias for pip3"
+  echo "  \033[1mplaypython\033[0m       cd Python playground and activate venv"
+  echo "  \033[1mplayr\033[0m            cd R playground and open R"
+  echo ""
+
+  echo "\033[1;33m  GIT QoL\033[0m"
+  echo "  \033[1mgst\033[0m              git status (short)"
+  echo "  \033[1mgss\033[0m              git status (full)"
+  echo "  \033[1mgd\033[0m               git diff"
+  echo "  \033[1mgds\033[0m              git diff --stat"
+  echo "  \033[1mgc\033[0m               git commit"
+  echo "  \033[1mgca\033[0m              git commit -am"
+  echo "  \033[1mgcm\033[0m \033[3m\"msg\"\033[0m        git commit -m"
+  echo "  \033[1mglog\033[0m             git log (graph, all branches)"
+  echo "  \033[1mgco\033[0m \033[3mbranch\033[0m       git checkout"
+  echo "  \033[1mgcb\033[0m \033[3mbranch\033[0m       git checkout -b (new branch)"
+  echo "  \033[1mgb\033[0m               git branch"
+  echo "  \033[1mgba\033[0m              git branch -a (all branches)"
+  echo "  \033[1mgstash\033[0m           git stash"
+  echo "  \033[1mgstashp\033[0m          git stash push"
+  echo "  \033[1mgstashl\033[0m          git stash list"
+  echo "  \033[1mgstashpopp\033[0m       git stash pop"
+  echo "  \033[1mgpl\033[0m              git pull"
+  echo "  \033[1mgps\033[0m              git push"
+  echo "  \033[1mgpsu\033[0m             git push -u origin HEAD"
+  echo "  \033[1mgremote\033[0m          git remote -v"
+  echo ""
+
+  echo "\033[2m  Type 'zconfig' to edit · dreemdev/dotfiles/.zshrc\033[0m"
+  echo ""
+}
+
+# ==========================
 # Core helpers
 # ==========================
 
