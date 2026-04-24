@@ -262,33 +262,45 @@ alias playr='cd ~/dev/dreemdev/projects/r/playground && R'
 # ==========================
 
 # Status & diffs
-alias gst='git status -sb'         # short status
-alias gss='git status'             # full status
-alias gd='git diff'
-alias gds='git diff --stat'
+alias gst='git status -sb'                          # Short, clean status
+alias gss='git status'                              # Full status
+alias gd='git diff'                                 # Unstaged changes
+alias gds='git diff --stat'                         # Diff summary (files changed)
+alias gdc='git diff --cached'                       # Staged changes (pre-commit review)
 
 # Commits & logs
-alias gc='git commit'
-alias gca='git commit -am'
-alias gcm='git commit -m'
-alias glog='git log --oneline --graph --decorate --all'
+alias gc='git commit'                               # Open editor for commit
+alias gca='git commit -am'                          # Stage all tracked + commit
+alias gcm='git commit -m'                           # Commit with inline message
+alias glog='git log --oneline --graph --decorate --all'  # Visual branch graph
+alias glast='git show --stat HEAD'                  # Show last commit details
+alias gwho='git shortlog -sn --all'                 # Commit count per author
+
+# Resetting & restoring
+alias gcr='git reset HEAD~1'                        # Undo last commit, unstage changes
+alias gcrs='git reset --soft HEAD~1'               # Undo last commit, keep staged
+alias gfu='git restore --staged'                    # Unstage a specific file: gfu <file>
+alias gnuke='git reset --hard HEAD'                 # Discard ALL uncommitted changes (careful)
 
 # Branching
-alias gco='git checkout'
-alias gcb='git checkout -b'
-alias gb='git branch'
-alias gba='git branch -a'
+alias gco='git checkout'                            # Switch branch or restore file
+alias gcb='git checkout -b'                         # Create and switch to new branch
+alias gb='git branch'                               # List local branches
+alias gba='git branch -a'                           # List all branches (local + remote)
+alias gbdel='git branch -d'                         # Delete branch (safe): gbdel <branch>
 
 # Stash
-alias gstash='git stash'
-alias gstashp='git stash push'
-alias gstashl='git stash list'
-alias gstashpopp='git stash pop'
+alias gstash='git stash'                            # Stash current changes
+alias gstashp='git stash push'                      # Stash with optional message
+alias gstashl='git stash list'                      # List all stashes
+alias gstashpopp='git stash pop'                    # Apply latest stash and remove it
 
 # Pull / push
-alias gpl='git pull'
-alias gps='git push'
-alias gpsu='git push -u origin HEAD'
+alias gpl='git pull'                                # Pull current branch
+alias gps='git push'                                # Push current branch
+alias gpsu='git push -u origin HEAD'                # Push and set upstream (first push)
+alias gpf='git push --force-with-lease'             # Safe force push (won't overwrite others)
 
 # Remote shortcuts
-alias gremote='git remote -v'
+alias gremote='git remote -v'                       # Show remote URLs
+alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune dead branches
