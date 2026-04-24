@@ -4,16 +4,21 @@ This manual explains how the `setup-basics.sh` script works and gives copy–pas
 
 The high‑level flow:
 
-1. Create your `~/dev` folder structure.  
-2. Install Xcode Command Line Tools and Homebrew.  
-3. Install Python and R (via Homebrew).  
-4. Configure Git (name, email, editor).  
-5. Generate an SSH key and connect it to GitHub.  
-6. Install Oh My Zsh + plugins (autosuggestions, syntax highlighting).  
-7. Clone the `dreemdev` repo via SSH.  
-8. Deploy your `~/.zshrc` from `dreemdev/dotfiles/.zshrc`.  
-9. Optionally bootstrap the Python and R playgrounds.  
-10. Optionally clone additional repos into `projects`, `learning`, or `dreemdev`.
+1. Create your `~/dev` folder structure.
+2. Install Xcode Command Line Tools and Homebrew.
+3. Install Python and R (via Homebrew).
+4. Install Oh My Zsh + plugins (autosuggestions, syntax highlighting).
+5. Install AlDente & any other essential Mac apps from brew.
+6. Configure Git (name, email, editor).
+7. Generate an SSH key and connect it to GitHub.
+8. Clone the `dreemdev` repo via SSH.
+9. Deploy your `~/.zshrc` from `dreemdev/dotfiles/.zshrc`.
+10. Optionally bootstrap the Python and R playgrounds.
+11. Optionally clone additional repos into `projects`, `learning`, or `dreemdev`.
+
+***
+
+Only section **0** needs updating to reflect the Zsh-safe sourcing fix. Here's the updated section:
 
 ***
 
@@ -23,8 +28,8 @@ The high‑level flow:
 
 On a brand‑new Mac:
 
-1. Log into GitHub in your browser and open the `dreemdev` repo.  
-2. Navigate to `setup-basics.sh`, click **Raw**, copy everything, and save it as `~/setup-basics.sh`.  
+1. Log into GitHub in your browser and open the `dreemdev` repo.
+2. Navigate to `setup-basics.sh`, click **Raw**, copy everything, and save it as `~/setup-basics.sh`.
 3. In Terminal:
 
 ```bash
@@ -33,9 +38,20 @@ chmod +x setup-basics.sh
 ./setup-basics.sh
 ```
 
-4. Answer the prompts step by step. You can say “no” to any step you don’t want to run yet.
+4. Answer the prompts step by step. You can say "no" to any step you don't want to run yet.
 
-The rest of this document explains what each step does and shows how to do it manually.
+### 0.2 Running a single function
+
+The script has a Zsh-safe guard at the bottom that prevents `main` from running when the file is sourced. This lets you call any individual function in isolation.
+
+**Zsh-safe method (use this in your terminal):**
+```bash
+bash -c '. ~/setup-basics.sh; install_aldente'
+bash -c '. ~/setup-basics.sh; install_homebrew'
+bash -c '. ~/setup-basics.sh; configure_git'
+```
+
+> Note: Use `.` (dot) instead of `source`, and wrap in `bash -c '...'`. This runs the function inside a Bash subshell, which prevents `set -u` and `BASH_SOURCE` from interfering with your interactive Zsh session.
 
 ***
 
@@ -45,10 +61,10 @@ The rest of this document explains what each step does and shows how to do it ma
 
 - Creates the base layout under `~/dev`:
 
-  - `~/dev/projects` – project repos (apps, libraries, services).  
-  - `~/dev/learning` – learning repos, experiments, courses.  
-  - `~/dev/dreemdev` – “motherload” repo (scripts, docs, configs, playgrounds).  
-  - `~/dev/temp` – scratch area.  
+  - `~/dev/projects` – project repos (apps, libraries, services).
+  - `~/dev/learning` – learning repos, experiments, courses.
+  - `~/dev/dreemdev` – “motherload” repo (scripts, docs, configs, playgrounds).
+  - `~/dev/temp` – scratch area.
   - `~/dev/archive` – old/parked work.
 
 ### Manual commands
@@ -126,7 +142,7 @@ brew --version
 
 - Installs or upgrades:
 
-  - `python` – Homebrew’s Python 3.x.  
+  - `python` – Homebrew’s Python 3.x.
   - `r` – base R (CLI) for data science/analytics. [formulae.brew](https://formulae.brew.sh/formula/r)
 
 ### Manual commands
@@ -152,7 +168,7 @@ R --version
 
 ### What the script does
 
-- Confirms `git` is available (via Xcode CLT).  
+- Confirms `git` is available (via Xcode CLT).
 - Sets global Git identity and default editor.
 
 ### Manual commands
@@ -185,11 +201,11 @@ git config --global --get core.editor
 
 ### What the script does
 
-- Ensures `~/.ssh` exists and has correct permissions.  
-- Generates an Ed25519 SSH key if you don’t already have one.  
-- Adds the key to `ssh-agent`.  
-- Copies the public key to your clipboard and prints it.  
-- Pauses so you can add it to your GitHub account.  
+- Ensures `~/.ssh` exists and has correct permissions.
+- Generates an Ed25519 SSH key if you don’t already have one.
+- Adds the key to `ssh-agent`.
+- Copies the public key to your clipboard and prints it.
+- Pauses so you can add it to your GitHub account.
 - Tests `ssh -T git@github.com`.
 
 Using SSH for GitHub access is standard practice for dev workflows. [atlassian](https://www.atlassian.com/git/tutorials/dotfiles)
@@ -205,7 +221,7 @@ chmod 700 ~/.ssh
 ssh-keygen -t ed25519 -C "you@example.com"
 ```
 
-- Accept default path (`~/.ssh/id_ed25519`) unless you want a custom name.  
+- Accept default path (`~/.ssh/id_ed25519`) unless you want a custom name.
 - Choose a strong passphrase if you want extra security.
 
 #### 5.2 Add key to `ssh-agent`
@@ -225,8 +241,8 @@ cat ~/.ssh/id_ed25519.pub
 
 Then in GitHub:
 
-1. Go to https://github.com  
-2. Avatar → **Settings** → **SSH and GPG keys**  
+1. Go to https://github.com
+2. Avatar → **Settings** → **SSH and GPG keys**
 3. **New SSH key** → name it (e.g. `MacBook Pro 2026`), paste the key, save.
 
 Test:
@@ -293,7 +309,7 @@ fi
 
 This way, on a new Mac:
 
-- Before you run this step, `.zshrc` skips Oh My Zsh/ plugins (no errors).  
+- Before you run this step, `.zshrc` skips Oh My Zsh/ plugins (no errors).
 - After this step, the theme + plugins are active in new shells. [blog.openreplay](https://blog.openreplay.com/customizing-terminal-oh-my-zsh-themes-plugins/)
 
 ***
@@ -302,7 +318,7 @@ This way, on a new Mac:
 
 ### What the script does
 
-- After SSH is working, clones `dreemdev` via SSH into `~/dev/dreemdev`.  
+- After SSH is working, clones `dreemdev` via SSH into `~/dev/dreemdev`.
 - Uses `git@github.com:ETA444/dreemdev.git` by default (you can override in the prompt).
 
 ### Manual commands
@@ -320,13 +336,13 @@ git clone git@github.com:ETA444/dreemdev.git .   # note the dot for current dire
 
 ### What the script does
 
-- Looks for `~/dev/dreemdev/dotfiles/.zshrc`.  
-- Backs up any existing `~/.zshrc` to `~/.zshrc.backup.YYYYMMDD-HHMMSS` (if it’s a regular file, not a symlink).  
+- Looks for `~/dev/dreemdev/dotfiles/.zshrc`.
+- Backs up any existing `~/.zshrc` to `~/.zshrc.backup.YYYYMMDD-HHMMSS` (if it’s a regular file, not a symlink).
 - Symlinks:
 
   ```text
   ~/.zshrc -> ~/dev/dreemdev/dotfiles/.zshrc
-  ```  
+  ```
 
 - Optionally sources `~/.zshrc` in the current shell.
 
@@ -364,10 +380,10 @@ source ~/.zshrc
 
 If `~/dev/dreemdev/projects/python/playground` exists and contains `requirements.txt`, it:
 
-1. Deletes any existing `venv` in that folder.  
-2. Creates a new venv with Homebrew’s `python3`.  
-3. Upgrades `pip`.  
-4. Installs packages from `requirements.txt`.  
+1. Deletes any existing `venv` in that folder.
+2. Creates a new venv with Homebrew’s `python3`.
+3. Upgrades `pip`.
+4. Installs packages from `requirements.txt`.
 
 This gives you a clean Python playground tied to your current Python version.
 
@@ -400,7 +416,7 @@ If `~/dev/dreemdev/projects/r/playground` exists, it:
 - If `renv.lock` exists:
   - Runs `install.packages("renv")` and `renv::restore()` to recreate the locked environment. [docs.posit](https://docs.posit.co/ide/user/ide/guide/environments/r/renv.html)
 - Else, if `requirements.R` exists:
-  - Runs `renv::init()`, sources `requirements.R` to install packages, then `renv::snapshot()`.  
+  - Runs `renv::init()`, sources `requirements.R` to install packages, then `renv::snapshot()`.
 
 This gives you a project‑local package library for R, similar to a Python venv. [bioinformatics.ccr.cancer](https://bioinformatics.ccr.cancer.gov/docs/reproducible-r-on-biowulf/L3_PackageManagement/)
 
@@ -441,12 +457,12 @@ The script lets you add repos one by one:
 
 For each repo:
 
-1. Ask **repo name** (e.g. `datasafari`, `georgedreemer.com`, `dreemcorp`).  
+1. Ask **repo name** (e.g. `datasafari`, `georgedreemer.com`, `dreemcorp`).
 2. Ask where it belongs:
-   - `~/dev/projects`  
-   - `~/dev/learning`  
-   - `~/dev/dreemdev`  
-3. Creates the base folder if needed.  
+   - `~/dev/projects`
+   - `~/dev/learning`
+   - `~/dev/dreemdev`
+3. Creates the base folder if needed.
 4. Clones `git@github.com:YOUR_USERNAME/REPO.git` into that location.
 
 This keeps your `projects` and `learning` trees dynamic—no hard‑coded repos in the script.
