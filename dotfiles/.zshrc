@@ -189,7 +189,7 @@ function qapp() {
 
 # Quit all visible apps except a safe list
 function quitall() {
-  local keep=("Finder" "Terminal" "iTerm2" "iTerm" "Notes" "Visual Studio Code" "Perplexity" "Comet" "1Password" "Proton Mail" "NordVPN" "pCloud Drive")
+  local keep=("Finder" "Terminal" "iTerm2" "iTerm" "AlDente" "Notes" "Visual Studio Code" "Perplexity" "Comet" "1Password" "Proton Mail" "NordVPN" "pCloud Drive")
   local running
   running=$(osascript -e 'tell application "System Events" to get the name of every process whose background only is false' | tr ',' '\n' | sed 's/^ //')
   while IFS= read -r app; do
