@@ -595,7 +595,16 @@ elsif anyof (
     "Epic Games",
     "Attitude Holland",
     "Aquarelle Fleurs",
-    "Arua"
+    "Arua",
+    "EasyLunettes",
+    "Tavex",
+    "Lentiamo",
+    "Coffeepadsbg",
+	  "Coffee",
+    "Swarovski",
+    "Swarovski.com",
+	  "Pudgy Penguins"
+
   ],
   header :contains "subject" [
     "The Entertainer",
