@@ -47,7 +47,7 @@ function zhelp() {
   echo "  \033[1m...\033[0m                   cd ../.. \033[0;33m·\033[0m \033[0;32mup two directories\033[0m"
   echo "  \033[1m....\033[0m                  cd ../../.. \033[0;33m·\033[0m \033[0;32mup three directories\033[0m"
   echo "  \033[1mc\033[0m                     clear \033[0;33m·\033[0m \033[0;32mclear terminal output\033[0m"
-  echo "  \033[1mtree\033[0m                  find . | sed … \033[0;33m·\033[0m \033[0;32mASCII directory tree\033[0m"
+  echo "  \033[1mtree\033[0m \033[3m[depth]\033[0m          find … \033[0;33m·\033[0m \033[0;32mASCII tree, default depth 3, skips .venv, etc.\033[0m"
   echo ""
   echo "\033[1;33m  APP CONTROL  \033[2m(osascript)\033[0m"
   echo "  \033[1mapps\033[0m                  \033[0;32mList all visible running apps (sorted)\033[0m"
@@ -168,10 +168,34 @@ alias ....='cd ../../.. && ls'
 # Clear terminal
 alias c='clear'
 
-# Tree-like view without installing tree:
-# Shows a simple ASCII tree of the current directory
-alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-
+# =============================================================================
+# tree — pretty-print directory structure with depth control
+#
+# USAGE:
+#   tree          → current dir, default depth (3)
+#   tree 2        → current dir, depth 2
+#   tree 5        → current dir, depth 5
+#
+# EXAMPLES:
+#   tree               # quick overview of any project
+#   tree 1             # top-level only (great for ~/dev)
+#   tree 2             # one level in, good for most repos
+#   tree 4             # go deeper when you need it
+#
+# EXCLUDED (always hidden regardless of depth):
+#   .git, node_modules, __pycache__, .venv, .mypy_cache, .pytest_cache
+# =============================================================================
+tree() {
+  local depth=${1:-3}
+  find . -maxdepth "$depth" \
+    -not -path '*/.git/*' \
+    -not -path '*/node_modules/*' \
+    -not -path '*/__pycache__/*' \
+    -not -path '*/.venv/*' \
+    -not -path '*/.mypy_cache/*' \
+    -not -path '*/.pytest_cache/*' \
+    -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+}
 
 # ==========================
 # App control (osascript)
