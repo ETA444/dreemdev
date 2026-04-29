@@ -316,10 +316,18 @@ alias bwn='sudo bandwhich -n'
 alias bwtn='sudo bandwhich -t -n'
 
 # Pause iCloud sync (before hotspot sessions)
-alias icloudpause='launchctl unload /System/Library/LaunchAgents/com.apple.cloudd.plist && echo "✓ iCloud sync paused"'
+alias icloudpause='
+  kill -SIGSTOP $(pgrep -x cloudd) 2>/dev/null
+  kill -SIGSTOP $(pgrep -x nsurlsessiond) 2>/dev/null
+  echo "✓ iCloud sync paused (cloudd + nsurlsessiond frozen)"
+'
 
-# Resume iCloud sync (when back on Wi-Fi)
-alias icloudresume='launchctl load /System/Library/LaunchAgents/com.apple.cloudd.plist && echo "✓ iCloud sync resumed"'
+# Resume iCloud sync (back on Wi-Fi)
+alias icloudresume='
+  kill -SIGCONT $(pgrep -x cloudd) 2>/dev/null
+  kill -SIGCONT $(pgrep -x nsurlsessiond) 2>/dev/null
+  echo "✓ iCloud sync resumed"
+'
 
 # =============================================================================
 # bwsession — timestamped hotspot session tracker
