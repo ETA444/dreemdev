@@ -336,3 +336,22 @@ alias gpf='git push --force-with-lease'             # Safe force push (won't ove
 # Remote shortcuts
 alias gremote='git remote -v'                       # Show remote URLs
 alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune dead branches
+
+# ==========================
+# Network & data monitor
+# ==========================
+
+# Live view — all interfaces, real-time bandwidth by process
+alias bw='sudo bandwhich'
+
+# Session totals — cumulative MB used since launch (all interfaces)
+alias bwt='sudo bandwhich -t'
+
+# Hotspot session — cumulative totals, Wi-Fi interface only (en0)
+alias bwwifi='sudo bandwhich -t -i en0'
+
+# Fast live view — skip DNS resolution (cleaner output, lower overhead)
+alias bwn='sudo bandwhich -n'
+
+# Fast totals — cumulative + no DNS (best for quick hotspot checks)
+alias bwtn='sudo bandwhich -t -n'
