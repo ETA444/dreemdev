@@ -355,3 +355,24 @@ alias bwn='sudo bandwhich -n'
 
 # Fast totals — cumulative + no DNS (best for quick hotspot checks)
 alias bwtn='sudo bandwhich -t -n'
+
+# =============================================================================
+# bwsession — timestamped hotspot session tracker
+#
+# USAGE:
+#   bwsession        → auto-detects active interface, starts cumulative tracker
+#
+# NOTES:
+#   - Falls back to en0 if interface can't be detected
+#   - Run at the start of a hotspot session
+#   - The cumulative column is your running MB total
+# =============================================================================
+function bwsession() {
+  local iface
+  iface=$(route get default 2>/dev/null | awk '/interface/ {print $2}')
+  iface=${iface:-en0}
+  echo ""
+  echo "\\033[1;36m📡 bandwhich session\\033[0m  ·  interface: \\033[1m$iface\\033[0m  ·  started: \\033[1m$(date '+%H:%M:%S')\\033[0m"
+  echo ""
+  sudo bandwhich -t -i "$iface"
+}
