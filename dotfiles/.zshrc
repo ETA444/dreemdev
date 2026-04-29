@@ -90,6 +90,8 @@ function zhelp() {
   echo "  \033[1mbwn\033[0m                   \033[0;32mLive view, no DNS resolve (faster)\033[0m"
   echo "  \033[1mbwtn\033[0m                  \033[0;32mCumulative totals, no DNS (cleanest)\033[0m"
   echo "  \033[1mbwsession\033[0m             \033[0;32mTimestamped hotspot session tracker (auto-detects interface)\033[0m"
+  echo "  \033[1micloudpause\033[0m           \033[0;32mPause iCloud sync daemon (before hotspot sessions)\033[0m"
+  echo "  \033[1micloudresume\033[0m          \033[0;32mResume iCloud sync daemon (back on Wi-Fi)\033[0m"
   echo ""
   echo "\033[1;33m  GIT QoL\033[0m"
   echo "  \033[1mgst\033[0m                   git status -sb \033[0;33m·\033[0m \033[0;32mshort, clean status\033[0m"
