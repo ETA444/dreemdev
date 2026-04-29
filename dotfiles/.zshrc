@@ -16,10 +16,6 @@ if [ -d "$ZSH" ]; then
   source "$ZSH/oh-my-zsh.sh"
 fi
 
-# ==========================
-# dreemdev help
-# ==========================
-
 function zhelp() {
   echo ""
   echo "\033[1;36m╔══════════════════════════════════════════════════════╗\033[0m"
@@ -86,6 +82,14 @@ function zhelp() {
   echo "  \033[1mpip\033[0m                   pip3 \033[0;33m·\033[0m \033[0;32mdefault to pip3\033[0m"
   echo "  \033[1mplaypython\033[0m            source venv/bin/activate \033[0;33m·\033[0m \033[0;32menter Python playground venv\033[0m"
   echo "  \033[1mplayr\033[0m                 cd …/playground && R \033[0;33m·\033[0m \033[0;32menter R playground\033[0m"
+  echo ""
+  echo "\033[1;33m  NETWORK & DATA MONITOR\033[0m"
+  echo "  \033[1mbw\033[0m                    \033[0;32mLive bandwidth by process (all interfaces)\033[0m"
+  echo "  \033[1mbwt\033[0m                   \033[0;32mCumulative session totals (all interfaces)\033[0m"
+  echo "  \033[1mbwwifi\033[0m                \033[0;32mCumulative totals, Wi-Fi only (en0)\033[0m"
+  echo "  \033[1mbwn\033[0m                   \033[0;32mLive view, no DNS resolve (faster)\033[0m"
+  echo "  \033[1mbwtn\033[0m                  \033[0;32mCumulative totals, no DNS (cleanest)\033[0m"
+  echo "  \033[1mbwsession\033[0m             \033[0;32mTimestamped hotspot session tracker (auto-detects interface)\033[0m"
   echo ""
   echo "\033[1;33m  GIT QoL\033[0m"
   echo "  \033[1mgst\033[0m                   git status -sb \033[0;33m·\033[0m \033[0;32mshort, clean status\033[0m"
@@ -289,6 +293,47 @@ alias pip='pip3'
 alias playpython='cd ~/dev/dreemdev/projects/python/playground && source venv/bin/activate'
 alias playr='cd ~/dev/dreemdev/projects/r/playground && R'
 
+
+# ==========================
+# Network & data monitor
+# ==========================
+
+# Live view — all interfaces, real-time bandwidth by process
+alias bw='sudo bandwhich'
+
+# Session totals — cumulative MB used since launch (all interfaces)
+alias bwt='sudo bandwhich -t'
+
+# Hotspot session — cumulative totals, Wi-Fi interface only (en0)
+alias bwwifi='sudo bandwhich -t -i en0'
+
+# Fast live view — skip DNS resolution (cleaner output, lower overhead)
+alias bwn='sudo bandwhich -n'
+
+# Fast totals — cumulative + no DNS (best for quick hotspot checks)
+alias bwtn='sudo bandwhich -t -n'
+
+# =============================================================================
+# bwsession — timestamped hotspot session tracker
+#
+# USAGE:
+#   bwsession        → auto-detects active interface, starts cumulative tracker
+#
+# NOTES:
+#   - Falls back to en0 if interface can't be detected
+#   - Run at the start of a hotspot session
+#   - The cumulative column is your running MB total
+# =============================================================================
+function bwsession() {
+  local iface
+  iface=$(route get default 2>/dev/null | awk '/interface/ {print $2}')
+  iface=${iface:-en0}
+  echo ""
+  echo "\\033[1;36m📡 bandwhich session\\033[0m  ·  interface: \\033[1m$iface\\033[0m  ·  started: \\033[1m$(date '+%H:%M:%S')\\033[0m"
+  echo ""
+  sudo bandwhich -t -i "$iface"
+}
+
 # ==========================
 # Git QoL
 # ==========================
@@ -336,43 +381,3 @@ alias gpf='git push --force-with-lease'             # Safe force push (won't ove
 # Remote shortcuts
 alias gremote='git remote -v'                       # Show remote URLs
 alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune dead branches
-
-# ==========================
-# Network & data monitor
-# ==========================
-
-# Live view — all interfaces, real-time bandwidth by process
-alias bw='sudo bandwhich'
-
-# Session totals — cumulative MB used since launch (all interfaces)
-alias bwt='sudo bandwhich -t'
-
-# Hotspot session — cumulative totals, Wi-Fi interface only (en0)
-alias bwwifi='sudo bandwhich -t -i en0'
-
-# Fast live view — skip DNS resolution (cleaner output, lower overhead)
-alias bwn='sudo bandwhich -n'
-
-# Fast totals — cumulative + no DNS (best for quick hotspot checks)
-alias bwtn='sudo bandwhich -t -n'
-
-# =============================================================================
-# bwsession — timestamped hotspot session tracker
-#
-# USAGE:
-#   bwsession        → auto-detects active interface, starts cumulative tracker
-#
-# NOTES:
-#   - Falls back to en0 if interface can't be detected
-#   - Run at the start of a hotspot session
-#   - The cumulative column is your running MB total
-# =============================================================================
-function bwsession() {
-  local iface
-  iface=$(route get default 2>/dev/null | awk '/interface/ {print $2}')
-  iface=${iface:-en0}
-  echo ""
-  echo "\\033[1;36m📡 bandwhich session\\033[0m  ·  interface: \\033[1m$iface\\033[0m  ·  started: \\033[1m$(date '+%H:%M:%S')\\033[0m"
-  echo ""
-  sudo bandwhich -t -i "$iface"
-}
