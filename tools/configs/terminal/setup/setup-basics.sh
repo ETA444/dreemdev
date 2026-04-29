@@ -168,6 +168,36 @@ install_aldente() {
   echo -e "${YELLOW}Launch AlDente from Applications and follow the onboarding.${RESET}"
 }
 
+install_bandwhich() {
+  echo -e "${CYAN}=== Installing bandwhich (network & data monitor) ===${RESET}"
+
+
+  if ! command -v brew >/dev/null 2>&1; then
+    echo -e "${YELLOW}Homebrew not available; skipping bandwhich installation.${RESET}"
+    return
+  fi
+
+
+  if brew list bandwhich &>/dev/null; then
+    echo "bandwhich already installed."
+  else
+    if confirm "Install bandwhich (terminal bandwidth monitor)?"; then
+      brew install bandwhich
+      echo -e "${GREEN}bandwhich installed.${RESET}"
+    fi
+  fi
+
+
+  echo -e "${CYAN}--- bandwhich Usage Reminder ---${RESET}"
+  echo "  All commands require sudo (raw socket access):"
+  echo "  1. bwsession    → timestamped hotspot session tracker (auto-detects interface)"
+  echo "  2. bwt          → cumulative session totals, all interfaces"
+  echo "  3. bwwifi       → cumulative totals, Wi-Fi only (en0)"
+  echo "  4. bw           → live bandwidth by process"
+  echo "  5. bwtn         → cumulative totals, no DNS (cleanest output)"
+  echo -e "${YELLOW}Run 'zhelp' and see NETWORK & DATA MONITOR for the full alias list.${RESET}"
+}
+
 configure_git() {
   echo -e "${CYAN}=== Git basic configuration ===${RESET}"
   if ! command -v git >/dev/null 2>&1; then
@@ -432,6 +462,10 @@ main() {
 
   if confirm "Install AlDente (battery charge limiter)?"; then
     install_aldente
+  fi
+
+  if confirm "Install bandwhich (network & data monitor)?"; then
+    install_bandwhich
   fi
 
   if confirm "Configure global git user.name, user.email and editor?"; then
