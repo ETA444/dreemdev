@@ -294,9 +294,9 @@ alias playpython='cd ~/dev/dreemdev/projects/python/playground && source venv/bi
 alias playr='cd ~/dev/dreemdev/projects/r/playground && R'
 
 
-# ==========================
-# Network & data monitor
-# ==========================
+# ========================================
+# Network & data monitoring & management
+# ========================================
 
 # Live view — all interfaces, real-time bandwidth by process
 alias bw='sudo bandwhich'
@@ -312,6 +312,12 @@ alias bwn='sudo bandwhich -n'
 
 # Fast totals — cumulative + no DNS (best for quick hotspot checks)
 alias bwtn='sudo bandwhich -t -n'
+
+# Pause iCloud sync (before hotspot sessions)
+alias icloudpause='launchctl unload /System/Library/LaunchAgents/com.apple.cloudd.plist && echo "✓ iCloud sync paused"'
+
+# Resume iCloud sync (when back on Wi-Fi)
+alias icloudresume='launchctl load /System/Library/LaunchAgents/com.apple.cloudd.plist && echo "✓ iCloud sync resumed"'
 
 # =============================================================================
 # bwsession — timestamped hotspot session tracker
