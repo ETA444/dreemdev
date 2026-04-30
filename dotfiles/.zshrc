@@ -319,13 +319,15 @@ alias bwtn='sudo bandwhich -t -n'
 alias icloudpause='
   kill -SIGSTOP $(pgrep -x cloudd) 2>/dev/null
   kill -SIGSTOP $(pgrep -x nsurlsessiond) 2>/dev/null
-  echo "✓ iCloud sync paused (cloudd + nsurlsessiond frozen)"
+  kill -SIGSTOP $(pgrep -x bird) 2>/dev/null
+  echo "✓ iCloud sync paused (cloudd + nsurlsessiond + bird frozen)"
 '
 
 # Resume iCloud sync (back on Wi-Fi)
 alias icloudresume='
   kill -SIGCONT $(pgrep -x cloudd) 2>/dev/null
   kill -SIGCONT $(pgrep -x nsurlsessiond) 2>/dev/null
+  kill -SIGCONT $(pgrep -x bird) 2>/dev/null
   echo "✓ iCloud sync resumed"
 '
 
