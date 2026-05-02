@@ -131,6 +131,11 @@ function zhelp() {
   echo "  \033[1mgremote\033[0m               git remote -v \033[0;33m·\033[0m \033[0;32mshow remote URLs\033[0m"
   echo "  \033[1mgfetch\033[0m                git fetch --all --prune \033[0;33m·\033[0m \033[0;32mfetch + clean up\033[0m"
   echo ""
+  echo "\033[1;33m  cPanel Controls\033[0m"
+  echo "  \033[1mcpanel-ssh\033[0m            \033[0;32mSSH into premium85 cPanel server\033[0m"
+  echo "  \033[1mcpanel-sync-cryptopandemic\033[0m  \033[0;32mSync cryptopandemic.com → local → ready to commit\033[0m"
+  echo ""
+  echo ""
   echo "\033[2m  Type 'zconfig' to edit · dreemdev/dotfiles/.zshrc\033[0m"
   echo ""
 }
@@ -400,10 +405,12 @@ alias gpf='git push --force-with-lease'             # Safe force push (won't ove
 alias gremote='git remote -v'                       # Show remote URLs
 alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune dead branches
 
-
 # ==========================
-# cPanel Sync
+# cPanel
 # ==========================
 
+# SSH into cPanel server
 alias cpanel-ssh="ssh -p 21098 georznmu@premium85.web-hosting.com"
+
+# Site syncs — pull from server to local, then commit manually
 alias cpanel-sync-cryptopandemic="~/dev/projects/cryptopandemic.com/scripts/cpanel-sync.sh"
