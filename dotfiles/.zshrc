@@ -399,3 +399,10 @@ alias gpf='git push --force-with-lease'             # Safe force push (won't ove
 # Remote shortcuts
 alias gremote='git remote -v'                       # Show remote URLs
 alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune dead branches
+
+
+# ==========================
+# cPanel Sync
+# ==========================
+
+alias cpanel-sync-cryptopandemic="~/dev/projects/cryptopandemic.com/scripts/cpanel-sync.sh"
