@@ -405,4 +405,5 @@ alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune d
 # cPanel Sync
 # ==========================
 
+alias cpanel-ssh="ssh -p 21098 georznmu@premium85.web-hosting.com"
 alias cpanel-sync-cryptopandemic="~/dev/projects/cryptopandemic.com/scripts/cpanel-sync.sh"
