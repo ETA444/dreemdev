@@ -135,6 +135,7 @@ function zhelp() {
   echo "  \033[1mcpanel\033[0m            \033[0;32mOpen cPanel Web Interface in browser\033[0m"
   echo "  \033[1mcpanel-ssh\033[0m            \033[0;32mSSH into premium85 cPanel server\033[0m"
   echo "  \033[1mcpanel-sync-cryptopandemic\033[0m  \033[0;32mSync cryptopandemic.com → local → ready to commit\033[0m"
+  echo "  \033[1mcpanel-sync-datasafari\033[0m  \033[0;32mSync datasafari.dev → local → ready to commit\033[0m"
   echo ""
   echo ""
   echo "\033[2m  Type 'zconfig' to edit · dreemdev/dotfiles/.zshrc\033[0m"
@@ -418,3 +419,4 @@ alias cpanel-ssh="ssh -p 21098 georznmu@premium85.web-hosting.com"
 
 # Site syncs — pull from server to local, then commit manually
 alias cpanel-sync-cryptopandemic="~/dev/projects/cryptopandemic.com/scripts/cpanel-sync.sh"
+alias cpanel-sync-datasafari="~/dev/projects/datasafari.dev/scripts/cpanel-sync.sh"
