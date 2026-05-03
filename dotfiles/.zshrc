@@ -132,6 +132,7 @@ function zhelp() {
   echo "  \033[1mgfetch\033[0m                git fetch --all --prune \033[0;33m·\033[0m \033[0;32mfetch + clean up\033[0m"
   echo ""
   echo "\033[1;33m  cPanel Controls\033[0m"
+  echo "  \033[1mcpanel\033[0m            \033[0;32mOpen cPanel Web Interface in browser\033[0m"
   echo "  \033[1mcpanel-ssh\033[0m            \033[0;32mSSH into premium85 cPanel server\033[0m"
   echo "  \033[1mcpanel-sync-cryptopandemic\033[0m  \033[0;32mSync cryptopandemic.com → local → ready to commit\033[0m"
   echo ""
@@ -408,6 +409,9 @@ alias gfetch='git fetch --all --prune'              # Fetch all remotes, prune d
 # ==========================
 # cPanel
 # ==========================
+
+# Open cPanel Web Interface in browser
+alias cpanel="open -a Comet https://premium85.web-hosting.com:2083/cpsess4367827383/frontend/jupiter/index.html"
 
 # SSH into cPanel server
 alias cpanel-ssh="ssh -p 21098 georznmu@premium85.web-hosting.com"
