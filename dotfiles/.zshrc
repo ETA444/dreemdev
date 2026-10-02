@@ -304,13 +304,13 @@ alias github='open -a Comet https://github.com/ETA444'
 # ==========================
 
 # Export tagged notes, commit and push (agent-26/perplexity/gen/notes)
-alias notes-agent26 ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --commit --push'
+alias notes-agent26='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --commit --push'
 
 # Export only, no git (safe dry run)
-alias notes-agent26-exportonly ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py'
+alias notes-agent26-exportonly='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py'
 
 # Show every note tag with counts (debug)
-alias notes-agent26-listtags ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --list-tags'
+alias notes-agent26-listtags='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --list-tags'
 
 # ==========================
 # Python & environments
