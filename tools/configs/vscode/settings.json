@@ -60,8 +60,6 @@
   "gitlens.hovers.currentLine.enabled": false,
   "gitlens.statusBar.enabled": true,
   "gitlens.codeLens.enabled": true,
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   // ===== TERMINAL =====
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.fontSize": 12,
@@ -103,5 +101,6 @@
     "mainThreadWebview-markdown.preview": true,
     "jupyter-notebook": true,
     "jupyter-data-wrangler": true
-  }
+  },
+  "claudeCode.preferredLocation": "panel"
 }
