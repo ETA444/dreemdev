@@ -111,6 +111,17 @@ Uses AppleScript via `osascript` to control macOS apps from the terminal.
 
 ***
 
+### Notes Sync
+
+| Alias | Description |
+|---|---|
+| `notes-agent26` | Export tagged Apple Notes → Markdown, commit + push |
+| `notes-agent26-exportonly` | Export only, no git |
+| `notes-agent26-listtags` | List all note tags with counts |
+
+
+***
+
 ### Python & Environments
 
 | Alias | Command | Description |

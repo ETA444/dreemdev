@@ -87,7 +87,6 @@ function zhelp() {
   echo "  \033[1mnotes-agent26\033[0m         \033[0;32mExport tagged Apple Notes → Markdown, commit + push\033[0m"
   echo "  \033[1mnotes-agent26-exportonly\033[0m \033[0;32mExport only, no git\033[0m"
   echo "  \033[1mnotes-agent26-listtags\033[0m  \033[0;32mList all note tags with counts\033[0m"
-  echo "  \033[1mnotes-agent26-dir\033[0m       \033[0;32mcd to the notes sync folder\033[0m"
   echo ""
   echo "\033[1;33m  NETWORK & DATA MONITOR\033[0m"
   echo "  \033[1mbw\033[0m                    \033[0;32mLive bandwidth by process (all interfaces)\033[0m"
