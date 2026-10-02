@@ -83,6 +83,12 @@ function zhelp() {
   echo "  \033[1mplaypython\033[0m            source venv/bin/activate \033[0;33m·\033[0m \033[0;32menter Python playground venv\033[0m"
   echo "  \033[1mplayr\033[0m                 cd …/playground && R \033[0;33m·\033[0m \033[0;32menter R playground\033[0m"
   echo ""
+    echo "\033[1;33m  NOTES SYNC\033[0m"
+  echo "  \033[1mnotes-agent26\033[0m         \033[0;32mExport tagged Apple Notes → Markdown, commit + push\033[0m"
+  echo "  \033[1mnotes-agent26-exportonly\033[0m \033[0;32mExport only, no git\033[0m"
+  echo "  \033[1mnotes-agent26-listtags\033[0m  \033[0;32mList all note tags with counts\033[0m"
+  echo "  \033[1mnotes-agent26-dir\033[0m       \033[0;32mcd to the notes sync folder\033[0m"
+  echo ""
   echo "\033[1;33m  NETWORK & DATA MONITOR\033[0m"
   echo "  \033[1mbw\033[0m                    \033[0;32mLive bandwidth by process (all interfaces)\033[0m"
   echo "  \033[1mbwt\033[0m                   \033[0;32mCumulative session totals (all interfaces)\033[0m"
@@ -293,6 +299,19 @@ alias notes='open -a Notes'
 alias youtube='open -a Comet https://youtube.com'
 alias google='open -a Comet https://google.com'
 alias github='open -a Comet https://github.com/ETA444'
+
+# ==========================
+# Notes sync (Apple Notes → Markdown)
+# ==========================
+
+# Export tagged notes, commit and push (agent-26/perplexity/gen/notes)
+alias notes-agent26 ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --commit --push'
+
+# Export only, no git (safe dry run)
+alias notes-agent26-exportonly ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py'
+
+# Show every note tag with counts (debug)
+alias notes-agent26-listtags ='python3 ~/dev/dreemgents/global/agent-26/perplexity/gen/notes/sync.py --list-tags'
 
 # ==========================
 # Python & environments
